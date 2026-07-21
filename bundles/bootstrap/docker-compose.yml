@@ -1,0 +1,5 @@
+name: kraftboks-bootstrap
+
+# Deliberately empty: this release establishes the verified provisioning path
+# without starting sensor- or site-specific workloads.
+services: {}
