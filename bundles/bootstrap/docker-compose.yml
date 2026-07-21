@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - /opt/kraftboks/data/mosquitto/config:/mosquitto/config:ro
+      - /opt/kraftboks/data/mosquitto/config:/mosquitto/config
       - /opt/kraftboks/data/mosquitto/data:/mosquitto/data
       - /opt/kraftboks/data/mosquitto/log:/mosquitto/log
     healthcheck:
