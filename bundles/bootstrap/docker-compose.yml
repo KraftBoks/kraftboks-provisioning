@@ -1,3 +1,28 @@
-# Deliberately empty: this release establishes the verified provisioning path
-# without starting sensor- or site-specific workloads.
-services: {}
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /opt/kraftboks/data/mosquitto/config:/mosquitto/config:ro
+      - /opt/kraftboks/data/mosquitto/data:/mosquitto/data
+      - /opt/kraftboks/data/mosquitto/log:/mosquitto/log
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub -h 127.0.0.1 -p 1883 -t '$$SYS/broker/version' -C 1 -W 3 >/dev/null 2>&1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  nodered:
+    image: nodered/node-red:5.0.1-debian
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    environment:
+      TZ: Europe/Oslo
+      SITE_ID: "${SITE_ID}"
+      FLOWS: flows.json
+    volumes:
+      - /opt/kraftboks/data/nodered:/data
