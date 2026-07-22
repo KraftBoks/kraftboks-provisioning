@@ -14,18 +14,35 @@ services:
       retries: 5
 
   nodered:
-    image: nodered/node-red:5.0.1-debian
+    # Keep the runtime aligned with the validated Gursli pilot flow baseline.
+    # nodered-deps installs the contributed nodes into the persistent /data
+    # volume exactly once before Node-RED is allowed to start.
+    image: nodered/node-red:4.1.1
     restart: unless-stopped
     network_mode: host
     depends_on:
       mosquitto:
         condition: service_healthy
+      nodered-deps:
+        condition: service_completed_successfully
     environment:
       TZ: Europe/Oslo
       SITE_ID: "${SITE_ID}"
       FLOWS: flows.json
     volumes:
       - /opt/kraftboks/data/nodered:/data
+
+  nodered-deps:
+    image: nodered/node-red:4.1.1
+    container_name: kraftboks-nodered-deps
+    restart: "no"
+    network_mode: host
+    user: "1000:1000"
+    working_dir: /data
+    entrypoint: ["/bin/sh", "/bootstrap/install-deps.sh"]
+    volumes:
+      - /opt/kraftboks/data/nodered:/data
+      - ./nodered/install-deps.sh:/bootstrap/install-deps.sh:ro
 
   outbox-relay:
     image: ghcr.io/kraftboks/outbox-relay:0.0.3
@@ -46,7 +63,7 @@ services:
       - /opt/kraftboks/data/outbox:/data
 
   hmi-api:
-    image: ghcr.io/kraftboks/mini-hmi-api:0.0.3
+    image: ghcr.io/kraftboks/mini-hmi-api:0.0.4
     container_name: kraftboks-hmi-${SITE_ID}-api
     restart: unless-stopped
     network_mode: host
@@ -66,7 +83,7 @@ services:
       - /opt/kraftboks/data/outbox:/data:ro
 
   hmi-web:
-    image: ghcr.io/kraftboks/mini-hmi-web:0.0.3
+    image: ghcr.io/kraftboks/mini-hmi-web:0.0.4
     container_name: kraftboks-hmi-${SITE_ID}-web
     restart: unless-stopped
     network_mode: host

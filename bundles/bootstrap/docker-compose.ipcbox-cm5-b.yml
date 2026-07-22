@@ -1,0 +1,15 @@
+# IPCBOX-CM5-B fieldbus extension.  It is selected only by the firstboot
+# hardware-profile prompt; generic Raspberry Pi installations never receive
+# these carrier-board device mappings.
+services:
+  nodered:
+    group_add:
+      - "20" # dialout on Raspberry Pi OS
+    devices:
+      - /dev/ttyAMA0:/dev/ttyAMA0
+      - /dev/ttyAMA2:/dev/ttyAMA2
+      - /dev/ttyAMA3:/dev/ttyAMA3
+      - /dev/ttyAMA4:/dev/ttyAMA4
+    volumes:
+      - /opt/kraftboks/data/nodered:/data
+      - /dev/serial/by-id:/dev/serial/by-id
