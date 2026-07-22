@@ -9,10 +9,14 @@ separate secret-management path.
 
 ## Bootstrap bundle
 
-`v0.1.0` is a deliberately minimal bundle. It validates the complete download,
-checksum, release and activation path, while leaving sensor-specific and
-site-specific services disabled. After firstboot, a later signed/versioned
-site bundle can be selected with `gatewayctl update`.
+`v0.1.5` provides the standard gateway platform: Mosquitto, Node-RED, local
+outbox relay, Mini-HMI API/web and the Headscale-bound access proxy start
+automatically after firstboot. Thermal bridge and MediaMTX/FFmpeg are Compose
+feature profiles, activated only when the firstboot camera questions are
+answered yes. This avoids restart loops when field devices have not yet been
+installed.
 
 The release asset is a gzip tarball whose root contains `docker-compose.yml`.
-Use its published SHA-256 with the firstboot wizard.
+It also contains generic HMI and access-proxy templates; firstboot renders the
+site ID and current Headscale address locally. Use its published SHA-256 with
+the firstboot wizard.

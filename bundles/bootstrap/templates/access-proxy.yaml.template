@@ -1,0 +1,6 @@
+# Generated locally at firstboot.  The proxy exposes no device ports until a
+# site-specific allowlist is deliberately added during commissioning.
+listen_address: __TAILSCALE_IP__
+health_address: 127.0.0.1
+health_port: 9100
+services: []
