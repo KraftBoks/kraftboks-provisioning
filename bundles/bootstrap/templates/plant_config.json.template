@@ -1,0 +1,28 @@
+{
+  "plant": {
+    "name": "KraftBoks gateway",
+    "short_name": "KraftBoks",
+    "site_id": "__SITE_ID__",
+    "description": "Standard gateway profile before site-specific commissioning"
+  },
+  "assets": [],
+  "cameras": [],
+  "devices": [
+    {
+      "id": "gateway_health",
+      "name": "KraftBoks gateway",
+      "type": "gateway_health",
+      "section": "Gateway",
+      "enabled": true,
+      "connection": {
+        "protocol": "mqtt",
+        "mqtt_topic": "sites/__SITE_ID__/telemetry/gateway/cm5/state"
+      },
+      "measurements": [
+        { "id": "gateway_cpu_temperature", "label": "CPU-temperatur", "unit": "°C", "decimals": 1, "overview": true, "mqtt_path": "cpu_temperature_c" },
+        { "id": "gateway_memory_usage", "label": "Minnebruk", "unit": "%", "decimals": 1, "overview": true, "mqtt_path": "memory_usage_percent" }
+      ],
+      "status_items": []
+    }
+  ]
+}

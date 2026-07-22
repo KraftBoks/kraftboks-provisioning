@@ -26,3 +26,114 @@ services:
       FLOWS: flows.json
     volumes:
       - /opt/kraftboks/data/nodered:/data
+
+  outbox-relay:
+    image: ghcr.io/kraftboks/outbox-relay:0.0.3
+    container_name: kraftboks-outbox-relay
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    environment:
+      SITE_ID: "${SITE_ID}"
+      MQTT_HOST: 127.0.0.1
+      MQTT_PORT: "1883"
+      OUTBOX_DB: /data/outbox.sqlite3
+      RETENTION_DAYS: "7"
+      MAX_DB_BYTES: "1073741824"
+    volumes:
+      - /opt/kraftboks/data/outbox:/data
+
+  hmi-api:
+    image: ghcr.io/kraftboks/mini-hmi-api:0.0.3
+    container_name: kraftboks-hmi-${SITE_ID}-api
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    environment:
+      SITE_ID: "${SITE_ID}"
+      MQTT_HOST: 127.0.0.1
+      MQTT_PORT: "1883"
+      MQTT_CLIENT_ID: kraftboks-hmi-${SITE_ID}-gateway
+      HMI_PROFILE: gateway
+      OUTBOX_DB: /data/outbox.sqlite3
+      KRAFTBOKS_HMI_CONFIG: /config/plant_config.json
+    volumes:
+      - ./config/plant_config.json:/config/plant_config.json:ro
+      - /opt/kraftboks/data/outbox:/data:ro
+
+  hmi-web:
+    image: ghcr.io/kraftboks/mini-hmi-web:0.0.3
+    container_name: kraftboks-hmi-${SITE_ID}-web
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      - hmi-api
+
+  access-proxy:
+    image: ghcr.io/kraftboks/access-proxy:0.0.3
+    container_name: kraftboks-access-proxy
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./config/access-proxy.yaml:/config/access-proxy.yaml:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:9100/ | grep -qx ok"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  thermal-camera-bridge:
+    profiles: ["thermal"]
+    image: ghcr.io/kraftboks/thermal-camera-bridge:0.0.3
+    container_name: kraftboks-thermal-camera
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    environment:
+      TZ: Europe/Oslo
+      SITE_ID: "${SITE_ID}"
+      DEVICE_ID: thermal-01
+      THERMAL_CAMERA_HOST: "${THERMAL_CAMERA_IP}"
+      THERMAL_CAMERA_PORT: "3333"
+      MQTT_HOST: 127.0.0.1
+      MQTT_PORT: "1883"
+      HTTP_PORT: "8090"
+      STATE_PUBLISH_MS: "5000"
+      FRAME_PUBLISH_MS: "5000"
+      TCP_RETRY_MS: "3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8090/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  mediamtx:
+    profiles: ["camera"]
+    image: bluenviron/mediamtx:1.11.3
+    container_name: kraftboks-camera-gateway
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      MTX_PATHS_CAMERAHIGH_SOURCE: "${CAMERA_HIGH_RTSP_URL}"
+      MTX_PATHS_CAMERAHIGH_SOURCEONDEMAND: "yes"
+
+  camera-low-transcoder:
+    profiles: ["camera"]
+    image: lscr.io/linuxserver/ffmpeg:7.0.2
+    container_name: kraftboks-camera-low-transcoder
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      - mediamtx
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        while true; do /usr/local/bin/ffmpeg -hide_banner -loglevel warning -rtsp_transport tcp -i "$$CAMERA_LOW_RTSP_URL" -an -vf "scale=-2:720,fps=8" -c:v libx264 -preset veryfast -tune zerolatency -b:v 1200k -maxrate 1500k -bufsize 2400k -g 16 -f flv rtmp://127.0.0.1:1935/cameralow; sleep 2; done
+    environment:
+      CAMERA_LOW_RTSP_URL: "${CAMERA_LOW_RTSP_URL}"
