@@ -1,0 +1,2511 @@
+[
+    {
+        "id": "tab_wtvb05_single",
+        "type": "tab",
+        "label": "WTVB05 Modbus",
+        "disabled": false,
+        "info": "WitMotion WTVB05 direkte i Node-RED via Modbus RTU pa RS485 CH2. Kun slave 80 aktiv."
+    },
+    {
+        "id": "tab_wtvb05_81",
+        "type": "tab",
+        "label": "WTVB05 Sensor 81",
+        "disabled": false,
+        "info": "Klargjort flow for WTVB05 sensor 2 pa slave 81. Importer nar sensoren er adressert og koblet til."
+    },
+    {
+        "id": "tab_flowmeter_gtul31b",
+        "type": "tab",
+        "label": "Flowmeter GTUL31B",
+        "disabled": true,
+        "info": "Jujea Ultrasonic Flow Meter GTUL31B. Basert pa bekreftet Modbus-test: slave 1, 9600 8N1, 36 holding-registere fra startadresse 0."
+    },
+    {
+        "id": "tab_kwh_dummy_01",
+        "type": "tab",
+        "label": "kWh Meter 01 WM3-96",
+        "disabled": true,
+        "info": "Carlo Gavazzi WM3-96 pa RS485 CH1, slave 1. Leser instantanverdier og total energiteller via Modbus funksjon 04."
+    },
+    {
+        "id": "tab_kwh_dummy_02",
+        "type": "tab",
+        "label": "kWh Meter 02 WM3-96",
+        "disabled": true,
+        "info": "Carlo Gavazzi WM3-96 pa RS485 CH1, slave 2. Leser instantanverdier og total energiteller via Modbus funksjon 04."
+    },
+    {
+        "id": "tab_gateway_health",
+        "type": "tab",
+        "label": "Gateway helse",
+        "disabled": false,
+        "info": "Mottar host-telemetri (CPU, minne, Headscale og LTE) og publiserer kanonisk gateway-status."
+    },
+    {
+        "id": "tab_simulated_power_meters",
+        "type": "tab",
+        "label": "Simulerte WM3-96 målere",
+        "disabled": false,
+        "info": "Midlertidige simulerte verdier for to energimålere. Deaktiver denne fanen og aktiver de fysiske WM3-96-fanene når RS485-målerne er tilkoblet og verifisert."
+    },
+    {
+        "id": "tab_qdw90a_modbus",
+        "type": "tab",
+        "label": "QDW90A trykk - klar for commissioning",
+        "disabled": true,
+        "info": "Deaktivert til QDW90A er fysisk koblet til RS485 CH3. Deaktiver simulert QDW90A før denne fanen aktiveres."
+    },
+    {
+        "id": "ui_tab_hmi_main",
+        "type": "ui_tab",
+        "name": "Kraftboks HMI",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "modbus_client_rs485_ch0",
+        "type": "modbus-client",
+        "name": "RS485 CH0",
+        "clienttype": "serial",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "127.0.0.1",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/serial/by-id/rs485_1",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "20",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "showLogs": false
+    },
+    {
+        "id": "modbus_client_rs485_ch1",
+        "type": "modbus-client",
+        "name": "RS485 CH1",
+        "clienttype": "serial",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "127.0.0.1",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/serial/by-id/rs485_ch1",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "20",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "showLogs": false
+    },
+    {
+        "id": "modbus_client_rs485_ch2",
+        "type": "modbus-client",
+        "name": "RS485 CH2",
+        "clienttype": "serial",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "127.0.0.1",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/serial/by-id/rs485_ch2",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "20",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "showLogs": false
+    },
+    {
+        "id": "modbus_client_rs485_ch3",
+        "type": "modbus-client",
+        "name": "RS485 CH3",
+        "clienttype": "serial",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "127.0.0.1",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/serial/by-id/rs485_ch3",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "20",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "showLogs": false
+    },
+    {
+        "id": "ui_group_overview",
+        "type": "ui_group",
+        "name": "Oversikt",
+        "tab": "ui_tab_hmi_main",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "ui_group_sensor80",
+        "type": "ui_group",
+        "name": "Sensor 80",
+        "tab": "ui_tab_hmi_main",
+        "order": 2,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "mqtt_local_broker",
+        "type": "mqtt-broker",
+        "name": "Local Mosquitto",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "nodered-wtvb05",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "ui_group_wtvb05_81_overview",
+        "type": "ui_group",
+        "name": "Oversikt",
+        "tab": "ui_tab_hmi_main",
+        "order": 3,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "ui_group_wtvb05_81_data",
+        "type": "ui_group",
+        "name": "Sensor 81",
+        "tab": "ui_tab_hmi_main",
+        "order": 4,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "mqtt_local_broker_wtvb05_81",
+        "type": "mqtt-broker",
+        "name": "Local Mosquitto",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "nodered-wtvb05-81",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "ui_group_flowmeter_overview",
+        "type": "ui_group",
+        "name": "Oversikt",
+        "tab": "ui_tab_hmi_main",
+        "order": 5,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "ui_group_flowmeter_live",
+        "type": "ui_group",
+        "name": "Liveverdier",
+        "tab": "ui_tab_hmi_main",
+        "order": 6,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "mqtt_local_broker_flowmeter",
+        "type": "mqtt-broker",
+        "name": "Local Mosquitto",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "nodered-flowmeter_rorgate",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "ui_group_kwh_01",
+        "type": "ui_group",
+        "name": "Maler 01",
+        "tab": "ui_tab_hmi_main",
+        "order": 7,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "mqtt_local_broker_kwh_01",
+        "type": "mqtt-broker",
+        "name": "Local Mosquitto",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "nodered-nettanalysator_gen1",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "ui_group_kwh_02",
+        "type": "ui_group",
+        "name": "Maler 02",
+        "tab": "ui_tab_hmi_main",
+        "order": 8,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "mqtt_local_broker_kwh_02",
+        "type": "mqtt-broker",
+        "name": "Local Mosquitto",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "nodered-nettanalysator_gen2",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "mqtt_local_broker_kwh_03",
+        "type": "mqtt-broker",
+        "name": "Local Mosquitto",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "nodered-kwh-03",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "6570a662b844cf93",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "read_acc80",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_single",
+        "name": "Les acc 80",
+        "topic": "acc",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "80",
+        "dataType": "HoldingRegister",
+        "adr": "52",
+        "quantity": "3",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 160,
+        "y": 80,
+        "wires": [
+            [
+                "fn_collect80"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_vel80",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_single",
+        "name": "Les vel 80",
+        "topic": "vel",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "80",
+        "dataType": "HoldingRegister",
+        "adr": "58",
+        "quantity": "3",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 160,
+        "y": 140,
+        "wires": [
+            [
+                "fn_collect80"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_temp80",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_single",
+        "name": "Les temp 80",
+        "topic": "temp",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "80",
+        "dataType": "HoldingRegister",
+        "adr": "64",
+        "quantity": "1",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "fn_collect80"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_disp80",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_single",
+        "name": "Les disp 80",
+        "topic": "disp",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "80",
+        "dataType": "HoldingRegister",
+        "adr": "65",
+        "quantity": "3",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 170,
+        "y": 260,
+        "wires": [
+            [
+                "fn_collect80"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_freq80",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_single",
+        "name": "Les freq 80",
+        "topic": "freq",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "80",
+        "dataType": "HoldingRegister",
+        "adr": "68",
+        "quantity": "3",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 170,
+        "y": 320,
+        "wires": [
+            [
+                "fn_collect80"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "catch_wtvb05",
+        "type": "catch",
+        "z": "tab_wtvb05_single",
+        "name": "Catch WTVB05",
+        "scope": [
+            "fn_collect80",
+            "read_acc80",
+            "read_vel80",
+            "read_temp80",
+            "read_disp80",
+            "read_freq80"
+        ],
+        "uncaught": false,
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "fn_error80"
+            ]
+        ]
+    },
+    {
+        "id": "fn_collect80",
+        "type": "function",
+        "z": "tab_wtvb05_single",
+        "name": "Bygg sensor 80",
+        "func": "function toSigned16(value) {\n    return value & 0x8000 ? value - 0x10000 : value;\n}\n\nfunction extractRegisters(payload) {\n    if (Array.isArray(payload)) {\n        return payload;\n    }\n    if (payload && Array.isArray(payload.data)) {\n        return payload.data;\n    }\n    if (payload && Array.isArray(payload.values)) {\n        return payload.values;\n    }\n    return null;\n}\n\nconst values = extractRegisters(msg.payload);\nif (!values) {\n    return null;\n}\n\nconst state = flow.get('wtvb05_80') || {\n    status: 'collecting',\n    slave_decimal: 80,\n    slave_hex: '0x50',\n    port: '/dev/serial/by-id/rs485_ch2',\n    baud: 9600\n};\n\nstate._parts = state._parts || {};\nstate.port = state.port || '/dev/serial/by-id/rs485_ch2';\nstate.baud = state.baud || 9600;\nstate.slave_decimal = 80;\nstate.slave_hex = '0x50';\nstate.timestamp = new Date().toISOString();\nstate.status = 'ok';\nstate.error = undefined;\nstate._parts[msg.topic] = true;\n\nif (msg.topic === 'acc') {\n    state.acc_raw = values;\n    state.acceleration_g = values.map(v => toSigned16(v) / 32768.0 * 16.0);\n}\nif (msg.topic === 'vel') {\n    state.vel_raw = values;\n    state.velocity_mms = values.map(v => toSigned16(v) / 100.0);\n}\nif (msg.topic === 'temp') {\n    state.temp_raw = values;\n    state.temperature_c = toSigned16(values[0]) / 100.0;\n}\nif (msg.topic === 'disp') {\n    state.disp_raw = values;\n    state.displacement_um = values.map(v => toSigned16(v));\n}\nif (msg.topic === 'freq') {\n    state.freq_raw = values;\n    state.frequency_hz = values.map(v => toSigned16(v) / 10.0);\n}\n\nflow.set('wtvb05_80', state);\n\nconst ready = ['acc', 'vel', 'temp', 'disp', 'freq'].every(k => state._parts[k]);\nif (!ready) {\n    return null;\n}\n\nconst payload = {\n    status: state.status,\n    slave_decimal: state.slave_decimal,\n    slave_hex: state.slave_hex,\n    port: state.port,\n    baud: state.baud,\n    timestamp: state.timestamp,\n    acc_raw: state.acc_raw,\n    vel_raw: state.vel_raw,\n    temp_raw: state.temp_raw,\n    disp_raw: state.disp_raw,\n    freq_raw: state.freq_raw,\n    acceleration_g: state.acceleration_g,\n    velocity_mms: state.velocity_mms,\n    temperature_c: state.temperature_c,\n    displacement_um: state.displacement_um,\n    frequency_hz: state.frequency_hz\n};\n\nreturn [\n    { payload },\n    { payload: payload.temperature_c, topic: 'Temp 80' },\n    { payload: payload.temperature_c },\n    { payload: payload.velocity_mms[2], topic: 'Vz 80' },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/vibrasjon_gen1/state', payload },\n    { payload: { port: payload.port, baud: payload.baud, timestamp: payload.timestamp } }\n];",
+        "outputs": 6,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 200,
+        "wires": [
+            [
+                "tpl_sensor80"
+            ],
+            [
+                "chart_temp80"
+            ],
+            [
+                "gauge_temp80"
+            ],
+            [
+                "chart_vel80"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ],
+            [
+                "tpl_overview"
+            ]
+        ]
+    },
+    {
+        "id": "fn_error80",
+        "type": "function",
+        "z": "tab_wtvb05_single",
+        "name": "Feil sensor 80",
+        "func": "const err = msg.error || msg.payload || {};\nconst payload = {\n    status: 'error',\n    slave_decimal: 80,\n    slave_hex: '0x50',\n    port: '/dev/serial/by-id/rs485_ch2',\n    baud: 9600,\n    timestamp: new Date().toISOString(),\n    error: err.message || err.error || 'Modbus-lesing feilet'\n};\nflow.set('wtvb05_80', payload);\nreturn [\n    { payload },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/vibrasjon_gen1/state', payload },\n    { payload: { port: payload.port, baud: payload.baud, timestamp: payload.timestamp } }\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 380,
+        "wires": [
+            [
+                "tpl_sensor80"
+            ],
+            [
+                "mqtt80"
+            ],
+            [
+                "tpl_overview"
+            ]
+        ]
+    },
+    {
+        "id": "tpl_overview",
+        "type": "ui_template",
+        "z": "tab_wtvb05_single",
+        "group": "ui_group_overview",
+        "name": "Oversiktskort",
+        "order": 1,
+        "width": "12",
+        "height": "3",
+        "format": "<div style=\"padding:8px;font-size:15px;\"><b>Port:</b> {{msg.payload.port}} @ {{msg.payload.baud}} baud<br/><b>Sist oppdatert:</b> {{msg.payload.timestamp}}<br/><b>Sensor:</b> Slave 80 pa /dev/serial/by-id/rs485_ch2<br/><b>Kilde:</b> Direkte Modbus i Node-RED</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 760,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "tpl_sensor80",
+        "type": "ui_template",
+        "z": "tab_wtvb05_single",
+        "group": "ui_group_sensor80",
+        "name": "Kort 80",
+        "order": 1,
+        "width": "12",
+        "height": "4",
+        "format": "<div style=\"padding:8px;font-size:14px;\"><b>Slave:</b> {{msg.payload.slave_decimal || 80}}<br/><b>Status:</b> {{msg.payload.status}}<div ng-if=\"msg.payload.status === 'ok'\"><b>Temp:</b> {{msg.payload.temperature_c | number:2}} C<br/><b>Acc:</b> X={{msg.payload.acceleration_g[0] | number:3}} Y={{msg.payload.acceleration_g[1] | number:3}} Z={{msg.payload.acceleration_g[2] | number:3}} g<br/><b>Vel:</b> X={{msg.payload.velocity_mms[0] | number:2}} Y={{msg.payload.velocity_mms[1] | number:2}} Z={{msg.payload.velocity_mms[2] | number:2}} mm/s<br/><b>Freq:</b> X={{msg.payload.frequency_hz[0] | number:1}} Y={{msg.payload.frequency_hz[1] | number:1}} Z={{msg.payload.frequency_hz[2] | number:1}} Hz</div><div ng-if=\"msg.payload.status !== 'ok'\"><b>Feil:</b> {{msg.payload.error}}</div></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 760,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "gauge_temp80",
+        "type": "ui_gauge",
+        "z": "tab_wtvb05_single",
+        "name": "Temp80",
+        "group": "ui_group_sensor80",
+        "order": 2,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Temperatur 80",
+        "label": "C",
+        "format": "{{value}}",
+        "min": "-20",
+        "max": "120",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "40",
+        "seg2": "80",
+        "className": "",
+        "x": 760,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "chart_temp80",
+        "type": "ui_chart",
+        "z": "tab_wtvb05_single",
+        "name": "Tempkurve80",
+        "group": "ui_group_sensor80",
+        "order": 3,
+        "width": "8",
+        "height": "4",
+        "label": "Temperatur 80",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#17becf"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 760,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "chart_vel80",
+        "type": "ui_chart",
+        "z": "tab_wtvb05_single",
+        "name": "Vz80",
+        "group": "ui_group_sensor80",
+        "order": 4,
+        "width": "12",
+        "height": "4",
+        "label": "Vibrasjon Z 80 (mm/s)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#d62728"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 770,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqtt80",
+        "type": "mqtt out",
+        "z": "tab_wtvb05_single",
+        "name": "MQTT 80",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker",
+        "x": 750,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "read_acc81",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_81",
+        "name": "Les acc 81",
+        "topic": "acc",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "81",
+        "dataType": "HoldingRegister",
+        "adr": "52",
+        "quantity": "3",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 160,
+        "y": 80,
+        "wires": [
+            [
+                "fn_collect81"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_vel81",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_81",
+        "name": "Les vel 81",
+        "topic": "vel",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "81",
+        "dataType": "HoldingRegister",
+        "adr": "58",
+        "quantity": "3",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 160,
+        "y": 140,
+        "wires": [
+            [
+                "fn_collect81"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_temp81",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_81",
+        "name": "Les temp 81",
+        "topic": "temp",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "81",
+        "dataType": "HoldingRegister",
+        "adr": "64",
+        "quantity": "1",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "fn_collect81"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_disp81",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_81",
+        "name": "Les disp 81",
+        "topic": "disp",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "81",
+        "dataType": "HoldingRegister",
+        "adr": "65",
+        "quantity": "3",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 170,
+        "y": 260,
+        "wires": [
+            [
+                "fn_collect81"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_freq81",
+        "type": "modbus-read",
+        "z": "tab_wtvb05_81",
+        "name": "Les freq 81",
+        "topic": "freq",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "81",
+        "dataType": "HoldingRegister",
+        "adr": "68",
+        "quantity": "3",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch2",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 170,
+        "y": 320,
+        "wires": [
+            [
+                "fn_collect81"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "catch_wtvb05_81",
+        "type": "catch",
+        "z": "tab_wtvb05_81",
+        "name": "Catch WTVB05 81",
+        "scope": [
+            "fn_collect81",
+            "read_acc81",
+            "read_vel81",
+            "read_temp81",
+            "read_disp81",
+            "read_freq81"
+        ],
+        "uncaught": false,
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "fn_error81"
+            ]
+        ]
+    },
+    {
+        "id": "fn_collect81",
+        "type": "function",
+        "z": "tab_wtvb05_81",
+        "name": "Bygg sensor 81",
+        "func": "function toSigned16(value) {\n    return value & 0x8000 ? value - 0x10000 : value;\n}\n\nfunction extractRegisters(payload) {\n    if (Array.isArray(payload)) return payload;\n    if (payload && Array.isArray(payload.data)) return payload.data;\n    if (payload && Array.isArray(payload.values)) return payload.values;\n    return null;\n}\n\nconst values = extractRegisters(msg.payload);\nif (!values) return null;\n\nconst state = flow.get('wtvb05_81') || {\n    status: 'collecting',\n    slave_decimal: 81,\n    slave_hex: '0x51',\n    port: '/dev/serial/by-id/rs485_ch2',\n    baud: 9600\n};\n\nstate._parts = state._parts || {};\nstate.timestamp = new Date().toISOString();\nstate.status = 'ok';\nstate.error = undefined;\nstate._parts[msg.topic] = true;\n\nif (msg.topic === 'acc') {\n    state.acc_raw = values;\n    state.acceleration_g = values.map(v => toSigned16(v) / 32768.0 * 16.0);\n}\nif (msg.topic === 'vel') {\n    state.vel_raw = values;\n    state.velocity_mms = values.map(v => toSigned16(v) / 100.0);\n}\nif (msg.topic === 'temp') {\n    state.temp_raw = values;\n    state.temperature_c = toSigned16(values[0]) / 100.0;\n}\nif (msg.topic === 'disp') {\n    state.disp_raw = values;\n    state.displacement_um = values.map(v => toSigned16(v));\n}\nif (msg.topic === 'freq') {\n    state.freq_raw = values;\n    state.frequency_hz = values.map(v => toSigned16(v) / 10.0);\n}\n\nflow.set('wtvb05_81', state);\n\nconst ready = ['acc', 'vel', 'temp', 'disp', 'freq'].every(k => state._parts[k]);\nif (!ready) return null;\n\nconst payload = {\n    status: state.status,\n    slave_decimal: 81,\n    slave_hex: '0x51',\n    port: state.port,\n    baud: state.baud,\n    timestamp: state.timestamp,\n    acc_raw: state.acc_raw,\n    vel_raw: state.vel_raw,\n    temp_raw: state.temp_raw,\n    disp_raw: state.disp_raw,\n    freq_raw: state.freq_raw,\n    acceleration_g: state.acceleration_g,\n    velocity_mms: state.velocity_mms,\n    temperature_c: state.temperature_c,\n    displacement_um: state.displacement_um,\n    frequency_hz: state.frequency_hz\n};\n\nreturn [\n    { payload },\n    { payload: payload.temperature_c, topic: 'Temp 81' },\n    { payload: payload.temperature_c },\n    { payload: payload.velocity_mms[2], topic: 'Vz 81' },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/vibrasjon_gen2/state', payload },\n    { payload: { port: payload.port, baud: payload.baud, timestamp: payload.timestamp } }\n];",
+        "outputs": 6,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 200,
+        "wires": [
+            [
+                "tpl_sensor81"
+            ],
+            [
+                "chart_temp81"
+            ],
+            [
+                "gauge_temp81"
+            ],
+            [
+                "chart_vel81"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ],
+            [
+                "tpl_overview81"
+            ]
+        ]
+    },
+    {
+        "id": "fn_error81",
+        "type": "function",
+        "z": "tab_wtvb05_81",
+        "name": "Feil sensor 81",
+        "func": "const err = msg.error || msg.payload || {};\nconst payload = {\n    status: 'error',\n    slave_decimal: 81,\n    slave_hex: '0x51',\n    port: '/dev/serial/by-id/rs485_ch2',\n    baud: 9600,\n    timestamp: new Date().toISOString(),\n    error: err.message || err.error || 'Modbus-lesing feilet'\n};\nflow.set('wtvb05_81', payload);\nreturn [\n    { payload },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/vibrasjon_gen2/state', payload },\n    { payload: { port: payload.port, baud: payload.baud, timestamp: payload.timestamp } }\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 380,
+        "wires": [
+            [
+                "tpl_sensor81"
+            ],
+            [
+                "mqtt81"
+            ],
+            [
+                "tpl_overview81"
+            ]
+        ]
+    },
+    {
+        "id": "tpl_overview81",
+        "type": "ui_template",
+        "z": "tab_wtvb05_81",
+        "group": "ui_group_wtvb05_81_overview",
+        "name": "Oversikt 81",
+        "order": 1,
+        "width": "12",
+        "height": "3",
+        "format": "<div style=\"padding:8px;font-size:15px;\"><b>Port:</b> {{msg.payload.port}} @ {{msg.payload.baud}} baud<br/><b>Sist oppdatert:</b> {{msg.payload.timestamp}}<br/><b>Sensor:</b> Slave 81 pa /dev/serial/by-id/rs485_ch2<br/><b>Kilde:</b> Direkte Modbus i Node-RED</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 790,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "tpl_sensor81",
+        "type": "ui_template",
+        "z": "tab_wtvb05_81",
+        "group": "ui_group_wtvb05_81_data",
+        "name": "Kort 81",
+        "order": 1,
+        "width": "12",
+        "height": "4",
+        "format": "<div style=\"padding:8px;font-size:14px;\"><b>Slave:</b> {{msg.payload.slave_decimal || 81}}<br/><b>Status:</b> {{msg.payload.status}}<div ng-if=\"msg.payload.status === 'ok'\"><b>Temp:</b> {{msg.payload.temperature_c | number:2}} C<br/><b>Acc:</b> X={{msg.payload.acceleration_g[0] | number:3}} Y={{msg.payload.acceleration_g[1] | number:3}} Z={{msg.payload.acceleration_g[2] | number:3}} g<br/><b>Vel:</b> X={{msg.payload.velocity_mms[0] | number:2}} Y={{msg.payload.velocity_mms[1] | number:2}} Z={{msg.payload.velocity_mms[2] | number:2}} mm/s<br/><b>Freq:</b> X={{msg.payload.frequency_hz[0] | number:1}} Y={{msg.payload.frequency_hz[1] | number:1}} Z={{msg.payload.frequency_hz[2] | number:1}} Hz</div><div ng-if=\"msg.payload.status !== 'ok'\"><b>Feil:</b> {{msg.payload.error}}</div></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 780,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "gauge_temp81",
+        "type": "ui_gauge",
+        "z": "tab_wtvb05_81",
+        "name": "Temp81",
+        "group": "ui_group_wtvb05_81_data",
+        "order": 2,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Temperatur 81",
+        "label": "C",
+        "format": "{{value}}",
+        "min": "-20",
+        "max": "120",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "40",
+        "seg2": "80",
+        "className": "",
+        "x": 780,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "chart_temp81",
+        "type": "ui_chart",
+        "z": "tab_wtvb05_81",
+        "name": "Tempkurve81",
+        "group": "ui_group_wtvb05_81_data",
+        "order": 3,
+        "width": "8",
+        "height": "4",
+        "label": "Temperatur 81",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#17becf"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 790,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "chart_vel81",
+        "type": "ui_chart",
+        "z": "tab_wtvb05_81",
+        "name": "Vz81",
+        "group": "ui_group_wtvb05_81_data",
+        "order": 4,
+        "width": "12",
+        "height": "4",
+        "label": "Vibrasjon Z 81 (mm/s)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#d62728"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 790,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqtt81",
+        "type": "mqtt out",
+        "z": "tab_wtvb05_81",
+        "name": "MQTT 81",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_wtvb05_81",
+        "x": 770,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "read_flowmeter_all",
+        "type": "modbus-read",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Les 36 holding-registre",
+        "topic": "flowmeter/raw",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "HoldingRegister",
+        "adr": "0",
+        "quantity": "36",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch0",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 180,
+        "y": 140,
+        "wires": [
+            [
+                "fn_decode_flowmeter"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "catch_flowmeter",
+        "type": "catch",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Catch flowmeter",
+        "scope": [
+            "fn_decode_flowmeter",
+            "read_flowmeter_all"
+        ],
+        "uncaught": false,
+        "x": 170,
+        "y": 260,
+        "wires": [
+            [
+                "fn_error_flowmeter"
+            ]
+        ]
+    },
+    {
+        "id": "fn_decode_flowmeter",
+        "type": "function",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Dekod GTUL31B",
+        "func": "function extractRegisters(payload) {\n    if (Array.isArray(payload)) return payload;\n    if (payload && Array.isArray(payload.data)) return payload.data;\n    if (payload && Array.isArray(payload.values)) return payload.values;\n    return null;\n}\n\nfunction decodeReal4Cdab(registers, startIndex) {\n    const regA = registers[startIndex];\n    const regB = registers[startIndex + 1];\n    const buf = Buffer.from([\n        (regB >> 8) & 0xFF,\n        regB & 0xFF,\n        (regA >> 8) & 0xFF,\n        regA & 0xFF\n    ]);\n    return buf.readFloatBE(0);\n}\n\nfunction decodeLongCdab(registers, startIndex) {\n    const regA = registers[startIndex];\n    const regB = registers[startIndex + 1];\n    const value = ((regB << 16) | regA) >>> 0;\n    return value > 0x7FFFFFFF ? value - 0x100000000 : value;\n}\n\nconst registers = extractRegisters(msg.payload);\nif (!registers || registers.length < 36) {\n    node.error('Forventet 36 registre fra flowmeter');\n    return null;\n}\n\nconst payload = {\n    status: 'ok',\n    device: 'GTUL31B',\n    slave_decimal: 1,\n    port: '/dev/serial/by-id/rs485_1',\n    baud: 9600,\n    timestamp: new Date().toISOString(),\n    raw_registers: registers,\n    instantaneous_flow_m3h: decodeReal4Cdab(registers, 0),\n    instantaneous_heat_flow_gjh: decodeReal4Cdab(registers, 2),\n    fluid_velocity_ms: decodeReal4Cdab(registers, 4),\n    sound_velocity_ms: decodeReal4Cdab(registers, 6),\n    positive_cumulative_flow: decodeLongCdab(registers, 8),\n    positive_cumulative_flow_fraction: decodeReal4Cdab(registers, 10),\n    negative_cumulative_flow: decodeLongCdab(registers, 12),\n    negative_cumulative_flow_fraction: decodeReal4Cdab(registers, 14),\n    positive_cumulative_heat: decodeLongCdab(registers, 16),\n    positive_cumulative_heat_fraction: decodeReal4Cdab(registers, 18),\n    negative_cumulative_heat: decodeLongCdab(registers, 20),\n    negative_cumulative_heat_fraction: decodeReal4Cdab(registers, 22),\n    net_cumulative_flow: decodeLongCdab(registers, 24),\n    net_cumulative_flow_fraction: decodeReal4Cdab(registers, 26),\n    net_accumulated_heat: decodeLongCdab(registers, 28),\n    net_accumulated_heat_fraction: decodeReal4Cdab(registers, 30),\n    supply_temperature_c: decodeReal4Cdab(registers, 32),\n    return_temperature_c: decodeReal4Cdab(registers, 34)\n};\n\npayload.delta_t_c = payload.supply_temperature_c - payload.return_temperature_c;\nflow.set('flowmeter_rorgate_last_real', Date.now());\n\nreturn [\n    { payload },\n    { payload: payload.instantaneous_flow_m3h, topic: 'Flow m3/h' },\n    { payload: payload.supply_temperature_c, topic: 'Supply C' },\n    { payload: payload.return_temperature_c, topic: 'Return C' },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/flowmeter_rorgate/state', payload },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/flowmeter_rorgate/flow_rate', payload: payload.instantaneous_flow_m3h },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/flowmeter_rorgate/supply_temperature', payload: payload.supply_temperature_c },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/flowmeter_rorgate/return_temperature', payload: payload.return_temperature_c },\n    { payload: { port: payload.port, baud: payload.baud, timestamp: payload.timestamp, slave_decimal: payload.slave_decimal } }\n];",
+        "outputs": 9,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 140,
+        "wires": [
+            [
+                "tpl_flowmeter_card"
+            ],
+            [
+                "chart_flow_m3h"
+            ],
+            [
+                "chart_supply_c"
+            ],
+            [
+                "chart_return_c"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ],
+            [
+                "tpl_flowmeter_overview"
+            ]
+        ]
+    },
+    {
+        "id": "fn_error_flowmeter",
+        "type": "function",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Feil flowmeter",
+        "func": "const err = msg.error || msg.payload || {};\nconst payload = {\n    status: 'error',\n    device: 'GTUL31B',\n    slave_decimal: 1,\n    port: '/dev/serial/by-id/rs485_1',\n    baud: 9600,\n    timestamp: new Date().toISOString(),\n    error: err.message || err.error || 'Modbus-lesing feilet'\n};\nreturn [\n    { payload },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/flowmeter_rorgate/state', payload },\n    { payload: { port: payload.port, baud: payload.baud, timestamp: payload.timestamp, slave_decimal: payload.slave_decimal } }\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 260,
+        "wires": [
+            [
+                "tpl_flowmeter_card"
+            ],
+            [
+                "mqtt_flowmeter_state"
+            ],
+            [
+                "tpl_flowmeter_overview"
+            ]
+        ]
+    },
+    {
+        "id": "tpl_flowmeter_overview",
+        "type": "ui_template",
+        "z": "tab_flowmeter_gtul31b",
+        "group": "ui_group_flowmeter_overview",
+        "name": "Oversikt flowmeter",
+        "order": 1,
+        "width": "12",
+        "height": "3",
+        "format": "<div style=\"padding:8px;font-size:15px;\"><b>Enhet:</b> GTUL31B<br/><b>Port:</b> /dev/serial/by-id/rs485_1 @ 9600 baud<br/><b>Slave:</b> 1<br/><b>Sist oppdatert:</b> {{msg.payload.timestamp}}</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 760,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "tpl_flowmeter_card",
+        "type": "ui_template",
+        "z": "tab_flowmeter_gtul31b",
+        "group": "ui_group_flowmeter_live",
+        "name": "Kort flowmeter",
+        "order": 1,
+        "width": "12",
+        "height": "5",
+        "format": "<div style=\"padding:8px;font-size:14px;\"><b>Status:</b> {{msg.payload.status}}<div ng-if=\"msg.payload.status === 'ok'\"><b>Flow:</b> {{msg.payload.instantaneous_flow_m3h | number:3}} m3/h<br/><b>Heat flow:</b> {{msg.payload.instantaneous_heat_flow_gjh | number:3}} GJ/h<br/><b>Fluid velocity:</b> {{msg.payload.fluid_velocity_ms | number:4}} m/s<br/><b>Supply:</b> {{msg.payload.supply_temperature_c | number:2}} C<br/><b>Return:</b> {{msg.payload.return_temperature_c | number:2}} C<br/><b>Delta T:</b> {{msg.payload.delta_t_c | number:2}} C<br/><b>Net flow:</b> {{msg.payload.net_cumulative_flow}} + {{msg.payload.net_cumulative_flow_fraction | number:3}}</div><div ng-if=\"msg.payload.status !== 'ok'\"><b>Feil:</b> {{msg.payload.error}}</div></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 760,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "chart_flow_m3h",
+        "type": "ui_chart",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Flowkurve",
+        "group": "ui_group_flowmeter_live",
+        "order": 2,
+        "width": "12",
+        "height": "4",
+        "label": "Flow m3/h",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#0f766e"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 760,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "chart_supply_c",
+        "type": "ui_chart",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Supplykurve",
+        "group": "ui_group_flowmeter_live",
+        "order": 3,
+        "width": "6",
+        "height": "4",
+        "label": "Supply C",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#b45309"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 750,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "chart_return_c",
+        "type": "ui_chart",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Returnkurve",
+        "group": "ui_group_flowmeter_live",
+        "order": 4,
+        "width": "6",
+        "height": "4",
+        "label": "Return C",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#1d4ed8"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 750,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqtt_flowmeter_state",
+        "type": "mqtt out",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "MQTT state flowmeter rørgate",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_kwh_01",
+        "x": 790,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "mqtt_flowmeter_measurement",
+        "type": "mqtt out",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "MQTT målinger flowmeter",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_flowmeter",
+        "x": 810,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "inject_simulated_flowmeter_rorgate",
+        "type": "inject",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Simulert flowmeter rørgate hvert 10. sekund",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 260,
+        "wires": [
+            [
+                "fn_simulated_flowmeter_rorgate"
+            ]
+        ]
+    },
+    {
+        "id": "fn_simulated_flowmeter_rorgate",
+        "type": "function",
+        "z": "tab_flowmeter_gtul31b",
+        "name": "Generer simulert flowmeter rørgate",
+        "func": "const now = new Date();\nconst nowMs = now.getTime();\nif (nowMs - (flow.get('flowmeter_rorgate_last_real') || 0) < 30000) return null;\nconst phase = nowMs / 60000;\nconst flowM3s = Math.max(0, 2.9 + Math.sin(phase / 3) * 0.35);\nmsg.topic = 'sites/gursli_pilot/telemetry/modbus/flowmeter_rorgate/state';\nmsg.payload = { event_id: `flowmeter_rorgate-sim-${now.toISOString()}`, timestamp: now.toISOString(), source: 'simulation', device_id: 'flowmeter_rorgate', status: 'simulated', simulated: true, model: 'GTUL31B', slave_decimal: 1, channel: 'RS485 CH2', instantaneous_flow_m3s: Number(flowM3s.toFixed(3)), instantaneous_flow_m3h: Number((flowM3s * 3600).toFixed(1)), sample_interval_seconds: 10 };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 260,
+        "wires": [
+            [
+                "mqtt_flowmeter_state"
+            ]
+        ]
+    },
+    {
+        "id": "read_kwh_01_instant",
+        "type": "modbus-read",
+        "z": "tab_kwh_dummy_01",
+        "name": "WM3-96 instant 01",
+        "topic": "instant",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "InputRegister",
+        "adr": "0",
+        "quantity": "118",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch1",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 180,
+        "y": 100,
+        "wires": [
+            [
+                "fn_kwh_01_collect"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_kwh_01_energy",
+        "type": "modbus-read",
+        "z": "tab_kwh_dummy_01",
+        "name": "WM3-96 energi 01",
+        "topic": "energy",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "InputRegister",
+        "adr": "236",
+        "quantity": "10",
+        "rate": "30",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "2",
+        "server": "modbus_client_rs485_ch1",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 180,
+        "y": 160,
+        "wires": [
+            [
+                "fn_kwh_01_collect"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "catch_kwh_01",
+        "type": "catch",
+        "z": "tab_kwh_dummy_01",
+        "name": "Catch kWh 01",
+        "scope": [
+            "read_kwh_01_instant",
+            "read_kwh_01_energy",
+            "fn_kwh_01_collect"
+        ],
+        "uncaught": false,
+        "x": 180,
+        "y": 220,
+        "wires": [
+            [
+                "fn_kwh_01_error"
+            ]
+        ]
+    },
+    {
+        "id": "fn_kwh_01_collect",
+        "type": "function",
+        "z": "tab_kwh_dummy_01",
+        "name": "Bygg WM3-96 01",
+        "func": "function extractRegisters(payload) {\n    if (Array.isArray(payload)) return payload;\n    if (payload && Array.isArray(payload.data)) return payload.data;\n    if (payload && Array.isArray(payload.values)) return payload.values;\n    return null;\n}\n\nfunction toSigned32(highWord, lowWord) {\n    let value = (((highWord & 0xFFFF) << 16) >>> 0) | (lowWord & 0xFFFF);\n    if (value > 0x7FFFFFFF) value -= 0x100000000;\n    return value;\n}\n\nfunction regIndex(byteAddress) {\n    return Math.floor(byteAddress / 2);\n}\n\nfunction intAt(registers, byteAddress) {\n    const idx = regIndex(byteAddress);\n    return toSigned32(registers[idx] || 0, registers[idx + 1] || 0);\n}\n\nfunction scaleFactor(code) {\n    return Math.pow(10, code - 6);\n}\n\nfunction signedByte(value) {\n    return value > 127 ? value - 256 : value;\n}\n\nfunction decodeCounter(registers, lowIndex, msbByte) {\n    const low32 = toSigned32(registers[lowIndex + 1] || 0, registers[lowIndex] || 0);\n    return (low32 + signedByte(msbByte) * 1000000000) / 100;\n}\n\nconst registers = extractRegisters(msg.payload);\nif (!registers) return null;\n\nconst state = flow.get('wm3_01') || {\n    status: 'collecting',\n    meter_id: 'nettanalysator_gen1',\n    model: 'Carlo Gavazzi WM3-96',\n    slave_decimal: 1,\n    port: '/dev/serial/by-id/rs485_ch1',\n    channel: 'RS485 CH1',\n    baud: 9600\n};\n\nstate.timestamp = new Date().toISOString();\nstate.status = 'ok';\nstate.error = undefined;\n\nif (msg.topic === 'instant') {\n    const infoWord1 = registers[116] || 0;\n    const infoWord2 = registers[117] || 0;\n    const infV = (infoWord1 >> 8) & 0xFF;\n    const infA = infoWord1 & 0xFF;\n    const infP = (infoWord2 >> 8) & 0xFF;\n    const vFactor = scaleFactor(infV);\n    const aFactor = scaleFactor(infA);\n    const pFactor = scaleFactor(infP);\n\n    state.inf_voltage = infV;\n    state.inf_current = infA;\n    state.inf_power = infP;\n    state.voltage_l1_v = intAt(registers, 0x000) * vFactor;\n    state.current_l1_a = intAt(registers, 0x004) * aFactor;\n    state.active_power_l1_w = intAt(registers, 0x008) * pFactor;\n    state.voltage_l2_v = intAt(registers, 0x00C) * vFactor;\n    state.current_l2_a = intAt(registers, 0x010) * aFactor;\n    state.active_power_l2_w = intAt(registers, 0x014) * pFactor;\n    state.voltage_l3_v = intAt(registers, 0x018) * vFactor;\n    state.current_l3_a = intAt(registers, 0x01C) * aFactor;\n    state.active_power_l3_w = intAt(registers, 0x020) * pFactor;\n    state.active_power_w = intAt(registers, 0x05C) * pFactor;\n    state.apparent_power_va = intAt(registers, 0x060) * pFactor;\n    state.reactive_power_var = intAt(registers, 0x064) * pFactor;\n    state.power_factor = intAt(registers, 0x068) * 0.001;\n    state.frequency_hz = intAt(registers, 0x0C4) * 0.1;\n    state.active_power_kw = state.active_power_w / 1000;\n    state.apparent_power_kva = state.apparent_power_va / 1000;\n    state.reactive_power_kvar = state.reactive_power_var / 1000;\n  }\n\nif (msg.topic === 'energy') {\n    const msbWord1 = registers[8] || 0;\n    const msbWord2 = registers[9] || 0;\n    state.energy_import_kwh = decodeCounter(registers, 0, (msbWord1 >> 8) & 0xFF);\n    state.energy_export_kwh = decodeCounter(registers, 2, msbWord1 & 0xFF);\n    state.reactive_import_kvarh = decodeCounter(registers, 4, (msbWord2 >> 8) & 0xFF);\n    state.reactive_export_kvarh = decodeCounter(registers, 6, msbWord2 & 0xFF);\n  }\n\nflow.set('wm3_01', state);\nflow.set('nettanalysator_gen1_last_real', Date.now());\n\nconst payload = {\n    status: state.status,\n    meter_id: state.meter_id,\n    model: state.model,\n    slave_decimal: state.slave_decimal,\n    port: state.port,\n    channel: state.channel,\n    baud: state.baud,\n    timestamp: state.timestamp,\n    voltage_l1_v: state.voltage_l1_v,\n    voltage_l2_v: state.voltage_l2_v,\n    voltage_l3_v: state.voltage_l3_v,\n    current_l1_a: state.current_l1_a,\n    current_l2_a: state.current_l2_a,\n    current_l3_a: state.current_l3_a,\n    active_power_kw: state.active_power_kw,\n    apparent_power_kva: state.apparent_power_kva,\n    reactive_power_kvar: state.reactive_power_kvar,\n    power_factor: state.power_factor,\n    frequency_hz: state.frequency_hz,\n    energy_import_kwh: state.energy_import_kwh,\n    energy_export_kwh: state.energy_export_kwh,\n    reactive_import_kvarh: state.reactive_import_kvarh,\n    reactive_export_kvarh: state.reactive_export_kvarh,\n    inf_voltage: state.inf_voltage,\n    inf_current: state.inf_current,\n    inf_power: state.inf_power\n};\n\nreturn [\n    { payload },\n    Number.isFinite(payload.active_power_kw) ? { payload: payload.active_power_kw, topic: 'kW 01' } : null,\n    { topic: 'sites/gursli_pilot/telemetry/modbus/nettanalysator_gen1/state', payload }\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 130,
+        "wires": [
+            [
+                "tpl_kwh_01"
+            ],
+            [
+                "chart_kwh_01"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ]
+        ]
+    },
+    {
+        "id": "fn_kwh_01_error",
+        "type": "function",
+        "z": "tab_kwh_dummy_01",
+        "name": "Feil kWh 01",
+        "func": "const err = msg.error || msg.payload || {};\nconst payload = {\n    status: 'error',\n    meter_id: 'nettanalysator_gen1',\n    model: 'Carlo Gavazzi WM3-96',\n    slave_decimal: 1,\n    port: '/dev/serial/by-id/rs485_ch1',\n    channel: 'RS485 CH1',\n    baud: 9600,\n    timestamp: new Date().toISOString(),\n    error: err.message || err.error || 'Modbus-lesing feilet'\n};\nflow.set('wm3_01', payload);\nreturn [\n    { payload },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/nettanalysator_gen1/state', payload }\n];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 220,
+        "wires": [
+            [
+                "tpl_kwh_01"
+            ],
+            [
+                "mqtt_kwh_01"
+            ]
+        ]
+    },
+    {
+        "id": "tpl_kwh_01",
+        "type": "ui_template",
+        "z": "tab_kwh_dummy_01",
+        "group": "ui_group_kwh_01",
+        "name": "Kort kWh 01",
+        "order": 1,
+        "width": "12",
+        "height": "6",
+        "format": "<div style=\"padding:8px;font-size:14px;\"><b>Status:</b> {{msg.payload.status}}<br/><b>Maler:</b> {{msg.payload.meter_id}} ({{msg.payload.model}})<br/><b>Kanal:</b> {{msg.payload.channel}} / slave {{msg.payload.slave_decimal}}<br/><b>Port:</b> {{msg.payload.port}} @ {{msg.payload.baud}} baud<br/><b>Sist oppdatert:</b> {{msg.payload.timestamp}}<div ng-if=\"msg.payload.status === 'ok'\"><hr/><b>Spenning:</b> L1 {{msg.payload.voltage_l1_v | number:1}} V, L2 {{msg.payload.voltage_l2_v | number:1}} V, L3 {{msg.payload.voltage_l3_v | number:1}} V<br/><b>Strom:</b> L1 {{msg.payload.current_l1_a | number:2}} A, L2 {{msg.payload.current_l2_a | number:2}} A, L3 {{msg.payload.current_l3_a | number:2}} A<br/><b>Aktiv effekt:</b> {{msg.payload.active_power_kw | number:2}} kW<br/><b>Tilsynelatende effekt:</b> {{msg.payload.apparent_power_kva | number:2}} kVA<br/><b>Reaktiv effekt:</b> {{msg.payload.reactive_power_kvar | number:2}} kvar<br/><b>PF:</b> {{msg.payload.power_factor | number:3}}<br/><b>Frekvens:</b> {{msg.payload.frequency_hz | number:1}} Hz<br/><b>Import:</b> {{msg.payload.energy_import_kwh | number:2}} kWh<br/><b>Eksport:</b> {{msg.payload.energy_export_kwh | number:2}} kWh</div><div ng-if=\"msg.payload.status !== 'ok'\"><hr/><b>Feil:</b> {{msg.payload.error}}</div></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 690,
+        "y": 110,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "chart_kwh_01",
+        "type": "ui_chart",
+        "z": "tab_kwh_dummy_01",
+        "name": "kW 01",
+        "group": "ui_group_kwh_01",
+        "order": 2,
+        "width": "12",
+        "height": "4",
+        "label": "Aktiv effekt kW",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "4",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#7c3aed"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 690,
+        "y": 170,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqtt_kwh_01",
+        "type": "mqtt out",
+        "z": "tab_kwh_dummy_01",
+        "name": "MQTT kWh 01",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_kwh_01",
+        "x": 690,
+        "y": 230,
+        "wires": []
+    },
+    {
+        "id": "read_kwh_02_instant",
+        "type": "modbus-read",
+        "z": "tab_kwh_dummy_02",
+        "name": "WM3-96 instant 02",
+        "topic": "instant",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "2",
+        "dataType": "InputRegister",
+        "adr": "0",
+        "quantity": "118",
+        "rate": "5",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "1",
+        "server": "modbus_client_rs485_ch1",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 180,
+        "y": 100,
+        "wires": [
+            [
+                "fn_kwh_02_collect"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "read_kwh_02_energy",
+        "type": "modbus-read",
+        "z": "tab_kwh_dummy_02",
+        "name": "WM3-96 energi 02",
+        "topic": "energy",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "2",
+        "dataType": "InputRegister",
+        "adr": "236",
+        "quantity": "10",
+        "rate": "30",
+        "rateUnit": "s",
+        "delayOnStart": true,
+        "enableDeformedMessages": false,
+        "startDelayTime": "2",
+        "server": "modbus_client_rs485_ch1",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 180,
+        "y": 160,
+        "wires": [
+            [
+                "fn_kwh_02_collect"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "catch_kwh_02",
+        "type": "catch",
+        "z": "tab_kwh_dummy_02",
+        "name": "Catch kWh 02",
+        "scope": [
+            "read_kwh_02_instant",
+            "read_kwh_02_energy",
+            "fn_kwh_02_collect"
+        ],
+        "uncaught": false,
+        "x": 180,
+        "y": 220,
+        "wires": [
+            [
+                "fn_kwh_02_error"
+            ]
+        ]
+    },
+    {
+        "id": "fn_kwh_02_collect",
+        "type": "function",
+        "z": "tab_kwh_dummy_02",
+        "name": "Bygg WM3-96 02",
+        "func": "function extractRegisters(payload) {\n    if (Array.isArray(payload)) return payload;\n    if (payload && Array.isArray(payload.data)) return payload.data;\n    if (payload && Array.isArray(payload.values)) return payload.values;\n    return null;\n}\n\nfunction toSigned32(highWord, lowWord) {\n    let value = (((highWord & 0xFFFF) << 16) >>> 0) | (lowWord & 0xFFFF);\n    if (value > 0x7FFFFFFF) value -= 0x100000000;\n    return value;\n}\n\nfunction regIndex(byteAddress) {\n    return Math.floor(byteAddress / 2);\n}\n\nfunction intAt(registers, byteAddress) {\n    const idx = regIndex(byteAddress);\n    return toSigned32(registers[idx] || 0, registers[idx + 1] || 0);\n}\n\nfunction scaleFactor(code) {\n    return Math.pow(10, code - 6);\n}\n\nfunction signedByte(value) {\n    return value > 127 ? value - 256 : value;\n}\n\nfunction decodeCounter(registers, lowIndex, msbByte) {\n    const low32 = toSigned32(registers[lowIndex + 1] || 0, registers[lowIndex] || 0);\n    return (low32 + signedByte(msbByte) * 1000000000) / 100;\n}\n\nconst registers = extractRegisters(msg.payload);\nif (!registers) return null;\n\nconst state = flow.get('wm3_02') || {\n    status: 'collecting',\n    meter_id: 'nettanalysator_gen2',\n    model: 'Carlo Gavazzi WM3-96',\n    slave_decimal: 2,\n    port: '/dev/serial/by-id/rs485_ch1',\n    channel: 'RS485 CH1',\n    baud: 9600\n};\n\nstate.timestamp = new Date().toISOString();\nstate.status = 'ok';\nstate.error = undefined;\n\nif (msg.topic === 'instant') {\n    const infoWord1 = registers[116] || 0;\n    const infoWord2 = registers[117] || 0;\n    const infV = (infoWord1 >> 8) & 0xFF;\n    const infA = infoWord1 & 0xFF;\n    const infP = (infoWord2 >> 8) & 0xFF;\n    const vFactor = scaleFactor(infV);\n    const aFactor = scaleFactor(infA);\n    const pFactor = scaleFactor(infP);\n\n    state.inf_voltage = infV;\n    state.inf_current = infA;\n    state.inf_power = infP;\n    state.voltage_l1_v = intAt(registers, 0x000) * vFactor;\n    state.current_l1_a = intAt(registers, 0x004) * aFactor;\n    state.active_power_l1_w = intAt(registers, 0x008) * pFactor;\n    state.voltage_l2_v = intAt(registers, 0x00C) * vFactor;\n    state.current_l2_a = intAt(registers, 0x010) * aFactor;\n    state.active_power_l2_w = intAt(registers, 0x014) * pFactor;\n    state.voltage_l3_v = intAt(registers, 0x018) * vFactor;\n    state.current_l3_a = intAt(registers, 0x01C) * aFactor;\n    state.active_power_l3_w = intAt(registers, 0x020) * pFactor;\n    state.active_power_w = intAt(registers, 0x05C) * pFactor;\n    state.apparent_power_va = intAt(registers, 0x060) * pFactor;\n    state.reactive_power_var = intAt(registers, 0x064) * pFactor;\n    state.power_factor = intAt(registers, 0x068) * 0.001;\n    state.frequency_hz = intAt(registers, 0x0C4) * 0.1;\n    state.active_power_kw = state.active_power_w / 1000;\n    state.apparent_power_kva = state.apparent_power_va / 1000;\n    state.reactive_power_kvar = state.reactive_power_var / 1000;\n  }\n\nif (msg.topic === 'energy') {\n    const msbWord1 = registers[8] || 0;\n    const msbWord2 = registers[9] || 0;\n    state.energy_import_kwh = decodeCounter(registers, 0, (msbWord1 >> 8) & 0xFF);\n    state.energy_export_kwh = decodeCounter(registers, 2, msbWord1 & 0xFF);\n    state.reactive_import_kvarh = decodeCounter(registers, 4, (msbWord2 >> 8) & 0xFF);\n    state.reactive_export_kvarh = decodeCounter(registers, 6, msbWord2 & 0xFF);\n  }\n\nflow.set('wm3_02', state);\nflow.set('nettanalysator_gen2_last_real', Date.now());\n\nconst payload = {\n    status: state.status,\n    meter_id: state.meter_id,\n    model: state.model,\n    slave_decimal: state.slave_decimal,\n    port: state.port,\n    channel: state.channel,\n    baud: state.baud,\n    timestamp: state.timestamp,\n    voltage_l1_v: state.voltage_l1_v,\n    voltage_l2_v: state.voltage_l2_v,\n    voltage_l3_v: state.voltage_l3_v,\n    current_l1_a: state.current_l1_a,\n    current_l2_a: state.current_l2_a,\n    current_l3_a: state.current_l3_a,\n    active_power_kw: state.active_power_kw,\n    apparent_power_kva: state.apparent_power_kva,\n    reactive_power_kvar: state.reactive_power_kvar,\n    power_factor: state.power_factor,\n    frequency_hz: state.frequency_hz,\n    energy_import_kwh: state.energy_import_kwh,\n    energy_export_kwh: state.energy_export_kwh,\n    reactive_import_kvarh: state.reactive_import_kvarh,\n    reactive_export_kvarh: state.reactive_export_kvarh,\n    inf_voltage: state.inf_voltage,\n    inf_current: state.inf_current,\n    inf_power: state.inf_power\n};\n\nreturn [\n    { payload },\n    Number.isFinite(payload.active_power_kw) ? { payload: payload.active_power_kw, topic: 'kW 02' } : null,\n    { topic: 'sites/gursli_pilot/telemetry/modbus/nettanalysator_gen2/state', payload }\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 130,
+        "wires": [
+            [
+                "tpl_kwh_02"
+            ],
+            [
+                "chart_kwh_02"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ]
+        ]
+    },
+    {
+        "id": "fn_kwh_02_error",
+        "type": "function",
+        "z": "tab_kwh_dummy_02",
+        "name": "Feil kWh 02",
+        "func": "const err = msg.error || msg.payload || {};\nconst payload = {\n    status: 'error',\n    meter_id: 'nettanalysator_gen2',\n    model: 'Carlo Gavazzi WM3-96',\n    slave_decimal: 2,\n    port: '/dev/serial/by-id/rs485_ch1',\n    channel: 'RS485 CH1',\n    baud: 9600,\n    timestamp: new Date().toISOString(),\n    error: err.message || err.error || 'Modbus-lesing feilet'\n};\nflow.set('wm3_02', payload);\nreturn [\n    { payload },\n    { topic: 'sites/gursli_pilot/telemetry/modbus/nettanalysator_gen2/state', payload }\n];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 220,
+        "wires": [
+            [
+                "tpl_kwh_02"
+            ],
+            [
+                "mqtt_kwh_02"
+            ]
+        ]
+    },
+    {
+        "id": "tpl_kwh_02",
+        "type": "ui_template",
+        "z": "tab_kwh_dummy_02",
+        "group": "ui_group_kwh_02",
+        "name": "Kort kWh 02",
+        "order": 1,
+        "width": "12",
+        "height": "6",
+        "format": "<div style=\"padding:8px;font-size:14px;\"><b>Status:</b> {{msg.payload.status}}<br/><b>Maler:</b> {{msg.payload.meter_id}} ({{msg.payload.model}})<br/><b>Kanal:</b> {{msg.payload.channel}} / slave {{msg.payload.slave_decimal}}<br/><b>Port:</b> {{msg.payload.port}} @ {{msg.payload.baud}} baud<br/><b>Sist oppdatert:</b> {{msg.payload.timestamp}}<div ng-if=\"msg.payload.status === 'ok'\"><hr/><b>Spenning:</b> L1 {{msg.payload.voltage_l1_v | number:1}} V, L2 {{msg.payload.voltage_l2_v | number:1}} V, L3 {{msg.payload.voltage_l3_v | number:1}} V<br/><b>Strom:</b> L1 {{msg.payload.current_l1_a | number:2}} A, L2 {{msg.payload.current_l2_a | number:2}} A, L3 {{msg.payload.current_l3_a | number:2}} A<br/><b>Aktiv effekt:</b> {{msg.payload.active_power_kw | number:2}} kW<br/><b>Tilsynelatende effekt:</b> {{msg.payload.apparent_power_kva | number:2}} kVA<br/><b>Reaktiv effekt:</b> {{msg.payload.reactive_power_kvar | number:2}} kvar<br/><b>PF:</b> {{msg.payload.power_factor | number:3}}<br/><b>Frekvens:</b> {{msg.payload.frequency_hz | number:1}} Hz<br/><b>Import:</b> {{msg.payload.energy_import_kwh | number:2}} kWh<br/><b>Eksport:</b> {{msg.payload.energy_export_kwh | number:2}} kWh</div><div ng-if=\"msg.payload.status !== 'ok'\"><hr/><b>Feil:</b> {{msg.payload.error}}</div></div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 690,
+        "y": 110,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "chart_kwh_02",
+        "type": "ui_chart",
+        "z": "tab_kwh_dummy_02",
+        "name": "kW 02",
+        "group": "ui_group_kwh_02",
+        "order": 2,
+        "width": "12",
+        "height": "4",
+        "label": "Aktiv effekt kW",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Venter pa data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "4",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": true,
+        "useUTC": false,
+        "colors": [
+            "#2563eb"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 690,
+        "y": 170,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqtt_kwh_02",
+        "type": "mqtt out",
+        "z": "tab_kwh_dummy_02",
+        "name": "MQTT kWh 02",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_kwh_02",
+        "x": 690,
+        "y": 230,
+        "wires": []
+    },
+    {
+        "id": "mqttin_gateway_health_raw",
+        "type": "mqtt in",
+        "z": "tab_gateway_health",
+        "name": "Gateway health raw",
+        "topic": "sites/gursli_pilot/telemetry/gateway/cm5/raw",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "mqtt_local_broker_kwh_03",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 100,
+        "wires": [
+            [
+                "fn_gateway_health"
+            ]
+        ]
+    },
+    {
+        "id": "fn_gateway_health",
+        "type": "function",
+        "z": "tab_gateway_health",
+        "name": "Valider gateway-status",
+        "func": "if (Buffer.isBuffer(msg.payload)) {\n    try { msg.payload = JSON.parse(msg.payload.toString('utf8')); }\n    catch (error) { node.error('Ugyldig gateway-JSON', msg); return null; }\n}\nconst payload = msg.payload;\nif (!payload || typeof payload !== 'object' || !payload.timestamp || payload.source !== 'cm5') {\n    node.error('Ugyldig gateway-telemetri', msg);\n    return null;\n}\nconst siteId = env.get('SITE_ID') || 'gursli_pilot';\npayload.event_id = payload.event_id || `cm5-health-${payload.timestamp}`;\nmsg.topic = `sites/${siteId}/telemetry/gateway/cm5/state`;\nmsg.payload = payload;\nreturn [msg, { payload }];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 100,
+        "wires": [
+            [
+                "mqtt_gateway_health"
+            ],
+            [
+                "debug_gateway_health"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_gateway_health",
+        "type": "mqtt out",
+        "z": "tab_gateway_health",
+        "name": "Publiser gateway-status",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "application/json",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_kwh_03",
+        "x": 730,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "debug_gateway_health",
+        "type": "debug",
+        "z": "tab_gateway_health",
+        "name": "Gateway helse logg",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 130,
+        "wires": []
+    },
+    {
+        "id": "inject_simulated_wm3",
+        "type": "inject",
+        "z": "tab_simulated_power_meters",
+        "name": "Simuler hvert 5. sekund",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "2",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 100,
+        "wires": [
+            [
+                "fn_simulated_wm3"
+            ]
+        ]
+    },
+    {
+        "id": "fn_simulated_wm3",
+        "type": "function",
+        "z": "tab_simulated_power_meters",
+        "name": "Generer to simulerte nettanalysatorer",
+        "func": "const siteId = env.get('SITE_ID') || 'gursli_pilot';\nconst now = new Date(); const nowMs = now.getTime();\nconst state = flow.get('simulated_nettanalysatorer') || { previous_ms: nowMs, energy_gen1_kwh: 12847.2, energy_gen2_kwh: 6843.7 };\nconst elapsedHours = Math.max(0, Math.min((nowMs - state.previous_ms) / 3600000, 1 / 12)); const phase = nowMs / 60000;\nfunction meter(deviceId, slave, baseKw, energyKey, shift) { const activePowerKw = Math.max(0, baseKw + Math.sin(phase / 2 + shift) * baseKw * 0.12); state[energyKey] += activePowerKw * elapsedHours; return { event_id: `${deviceId}-sim-${now.toISOString()}`, timestamp: now.toISOString(), source: 'simulation', device_id: deviceId, status: 'simulated', simulated: true, model: 'Carlo Gavazzi WM3-96', slave_decimal: slave, channel: 'RS485 CH1', frequency_hz: Number((50 + Math.sin(phase / 5 + shift) * 0.04).toFixed(2)), voltage_l1_v: 230.2, voltage_l2_v: 231.0, voltage_l3_v: 229.2, voltage_l1_l2_v: 399.1, voltage_l2_l3_v: 398.6, voltage_l3_l1_v: 399.5, current_l1_a: Number((activePowerKw * 1.54).toFixed(2)), current_l2_a: Number((activePowerKw * 1.49).toFixed(2)), current_l3_a: Number((activePowerKw * 1.51).toFixed(2)), active_power_kw: Number(activePowerKw.toFixed(2)), energy_import_kwh: Number(state[energyKey].toFixed(3)), energy_export_kwh: 0 }; }\nstate.previous_ms = nowMs; flow.set('simulated_nettanalysatorer', state);\nconst gen1 = nowMs - (flow.get('nettanalysator_gen1_last_real') || 0) >= 30000 ? { topic: `sites/${siteId}/telemetry/modbus/nettanalysator_gen1/state`, payload: meter('nettanalysator_gen1', 1, 70, 'energy_gen1_kwh', 0) } : null;\nconst gen2 = nowMs - (flow.get('nettanalysator_gen2_last_real') || 0) >= 30000 ? { topic: `sites/${siteId}/telemetry/modbus/nettanalysator_gen2/state`, payload: meter('nettanalysator_gen2', 2, 28, 'energy_gen2_kwh', 1.7) } : null;\nlet flowmeter = null; if (nowMs - (flow.get('flowmeter_rorgate_last_real') || 0) >= 30000 && nowMs - (flow.get('simulated_flowmeter_rorgate_last') || 0) >= 10000) { const flowM3s=Math.max(0,2.9+Math.sin(phase/3)*0.35); flow.set('simulated_flowmeter_rorgate_last',nowMs); flowmeter={topic:`sites/${siteId}/telemetry/modbus/flowmeter_rorgate/state`,payload:{event_id:`flowmeter_rorgate-sim-${now.toISOString()}`,timestamp:now.toISOString(),source:'simulation',device_id:'flowmeter_rorgate',status:'simulated',simulated:true,model:'GTUL31B',slave_decimal:1,channel:'RS485 CH2',instantaneous_flow_m3s:Number(flowM3s.toFixed(3)),instantaneous_flow_m3h:Number((flowM3s*3600).toFixed(1)),sample_interval_seconds:10}}; }\nreturn [gen1, gen2, flowmeter];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 100,
+        "wires": [
+            [
+                "fn_mqtt_aggregate_30s"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ],
+            [
+                "fn_mqtt_aggregate_30s"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_simulated_wm3_01",
+        "type": "mqtt out",
+        "z": "tab_simulated_power_meters",
+        "name": "Publiser simulert kWh 01",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "application/json",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_kwh_01",
+        "x": 730,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "mqtt_simulated_wm3_02",
+        "type": "mqtt out",
+        "z": "tab_simulated_power_meters",
+        "name": "Publiser simulert kWh 02",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "application/json",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_kwh_02",
+        "x": 730,
+        "y": 130,
+        "wires": []
+    },
+    {
+        "id": "inject_simulated_qdw90a",
+        "type": "inject",
+        "z": "tab_simulated_power_meters",
+        "name": "Simulert trykk og vannstand hvert minutt",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "fn_simulated_qdw90a"
+            ]
+        ]
+    },
+    {
+        "id": "fn_simulated_qdw90a",
+        "type": "function",
+        "z": "tab_simulated_power_meters",
+        "name": "Generer simulert QDW90A-trykk",
+        "func": "const now = new Date();\nconst siteId = env.get('SITE_ID') || 'gursli_pilot';\nconst phase = (now.getTime() / 86400000) * Math.PI * 2;\nconst pressureBar = 11.65 + 0.85 * Math.sin(phase);\nconst calibration = flow.get('trykkfoler_rorgate_calibration') || { enabled: true, meters_per_bar: 10.1974, reference_pressure_bar: 0, reference_level_m: -105.0 };\nfunction estimatedWaterLevel(pressureBar) { if (!calibration.enabled || !Number.isFinite(calibration.reference_pressure_bar) || !Number.isFinite(calibration.reference_level_m)) return null; return Number((calibration.reference_level_m + (pressureBar - calibration.reference_pressure_bar) * (calibration.meters_per_bar || 10.1974)).toFixed(2)); }\nmsg.topic = `sites/${siteId}/telemetry/modbus/trykkfoler_rorgate/state`;\nmsg.payload = { event_id: `trykkfoler_rorgate-sim-${now.toISOString()}`, timestamp: now.toISOString(), source: 'simulation', device_id: 'trykkfoler_rorgate', status: 'simulated', simulated: true, model: 'QDW90A', pressure_bar: Number(pressureBar.toFixed(2)), estimated_water_level_m: estimatedWaterLevel(pressureBar), water_level_calibration: calibration, unit: 'bar', sample_interval_seconds: 7200 };\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 200,
+        "wires": [
+            [
+                "mqtt_simulated_qdw90a"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_simulated_qdw90a",
+        "type": "mqtt out",
+        "z": "tab_simulated_power_meters",
+        "name": "Publiser simulert QDW90A-trykk",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "application/json",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_kwh_01",
+        "x": 790,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "inject_qdw90a_poll",
+        "type": "inject",
+        "z": "tab_qdw90a_modbus",
+        "name": "Poll QDW90A hvert 5. sekund",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "2",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 100,
+        "wires": [
+            [
+                "read_qdw90a_config_value"
+            ]
+        ]
+    },
+    {
+        "id": "read_qdw90a_config_value",
+        "type": "modbus-read",
+        "z": "tab_qdw90a_modbus",
+        "name": "QDW90A enhet, desimaler og trykk",
+        "topic": "qdw90a/raw",
+        "showStatusActivities": false,
+        "showErrors": true,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "InputRegister",
+        "adr": "2",
+        "quantity": "3",
+        "rate": "5000",
+        "rateUnit": "ms",
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "server": "modbus_client_rs485_ch3",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 460,
+        "y": 100,
+        "wires": [
+            [
+                "fn_decode_qdw90a"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "fn_decode_qdw90a",
+        "type": "function",
+        "z": "tab_qdw90a_modbus",
+        "name": "Dekoder QDW90A",
+        "func": "function extractRegisters(payload) {\n    if (Array.isArray(payload)) return payload;\n    if (payload && Array.isArray(payload.data)) return payload.data;\n    if (payload && Array.isArray(payload.values)) return payload.values;\n    return null;\n}\nfunction signed16(value) {\n    return value & 0x8000 ? value - 0x10000 : value;\n}\nconst values = extractRegisters(msg.payload);\nif (!values || values.length < 3) {\n    node.error('Forventet tre QDW90A-registere (enhet, desimaler, verdi)', msg);\n    return null;\n}\nconst units = {\n    0: 'MPa', 1: 'kPa', 2: 'Pa', 3: 'bar', 4: 'mbar', 5: 'kg/cm2',\n    6: 'psi', 7: 'mH2O', 8: 'mmH2O', 9: 'inH2O', 10: 'H2O',\n    11: 'mHg', 12: 'mmHg', 13: 'inHg', 14: 'atm', 15: 'Torr',\n    16: 'm', 17: 'cm', 18: 'mm', 19: 'kg', 20: 'C', 21: 'pH', 22: 'F'\n};\nconst decimals = values[1];\nif (!Number.isInteger(decimals) || decimals < 0 || decimals > 4) {\n    node.error('Ugyldig QDW90A-desimalposisjon', msg);\n    return null;\n}\nconst unit = units[values[0]] || `unit-code-${values[0]}`;\nconst value = signed16(values[2]) / Math.pow(10, decimals);\nconst calibration = flow.get('trykkfoler_rorgate_calibration') || { enabled: true, meters_per_bar: 10.1974, reference_pressure_bar: 0, reference_level_m: -115.0 };\nfunction estimatedWaterLevel(pressureBar) { if (!calibration.enabled || !Number.isFinite(calibration.reference_pressure_bar) || !Number.isFinite(calibration.reference_level_m)) return null; return Number((calibration.reference_level_m + (pressureBar - calibration.reference_pressure_bar) * (calibration.meters_per_bar || 10.1974)).toFixed(2)); }\nconst now = new Date();\nconst siteId = env.get('SITE_ID') || 'gursli_pilot';\nmsg.topic = `sites/${siteId}/telemetry/modbus/trykkfoler_rorgate/state`;\nmsg.payload = {\n    event_id: `trykkfoler_rorgate-${now.toISOString()}`,\n    timestamp: now.toISOString(),\n    source: 'modbus',\n    device_id: 'trykkfoler_rorgate',\n    status: 'ok',\n    simulated: false,\n    model: 'QDW90A',\n    channel: 'RS485 CH3',\n    slave_decimal: 1,\n    baud: 9600,\n    measurement: 'pressure',\n    pressure_value: value,\n    pressure_bar: unit === 'bar' ? value : null,\n    estimated_water_level_m: unit === 'bar' ? estimatedWaterLevel(value) : null,\n    water_level_calibration: calibration,\n    unit,\n    decimal_places: decimals,\n    registers: { unit: '0x0002', decimal_places: '0x0003', value: '0x0004' }\n};\nflow.set('trykkfoler_rorgate_last_real', Date.now());\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 100,
+        "wires": [
+            [
+                "fn_mqtt_aggregate_30s"
+            ]
+        ]
+    },
+    {
+        "id": "catch_qdw90a",
+        "type": "catch",
+        "z": "tab_qdw90a_modbus",
+        "name": "QDW90A Modbus-feil",
+        "scope": [
+            "read_qdw90a_config_value",
+            "fn_decode_qdw90a"
+        ],
+        "uncaught": false,
+        "x": 220,
+        "y": 160,
+        "wires": [
+            [
+                "fn_qdw90a_error"
+            ]
+        ]
+    },
+    {
+        "id": "fn_qdw90a_error",
+        "type": "function",
+        "z": "tab_qdw90a_modbus",
+        "name": "Bygg QDW90A-feil",
+        "func": "const now = new Date();\nconst siteId = env.get('SITE_ID') || 'gursli_pilot';\nconst err = msg.error || msg.payload || {};\nmsg.topic = `sites/${siteId}/telemetry/modbus/trykkfoler_rorgate/state`;\nmsg.payload = {\n    event_id: `trykkfoler_rorgate-error-${now.toISOString()}`,\n    timestamp: now.toISOString(),\n    source: 'modbus',\n    device_id: 'trykkfoler_rorgate',\n    status: 'error',\n    simulated: false,\n    model: 'QDW90A',\n    channel: 'RS485 CH3',\n    slave_decimal: 1,\n    error: err.message || err.error || 'Modbus-lesing feilet'\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 160,
+        "wires": [
+            [
+                "mqtt_qdw90a_state"
+            ]
+        ]
+    },
+    {
+        "id": "tab_mqtt_aggregation",
+        "type": "tab",
+        "label": "MQTT 30-sekunders aggregering",
+        "disabled": false,
+        "info": "Ordinære måleverdier snittberegnes i 30 sekunder og publiseres to ganger per minutt. Feiltilstander publiseres umiddelbart."
+    },
+    {
+        "id": "inject_mqtt_aggregate_30s",
+        "type": "inject",
+        "z": "tab_mqtt_aggregation",
+        "name": "Publiser 30-sekunders gjennomsnitt",
+        "props": [
+            {
+                "p": "_aggregate_flush",
+                "v": "true",
+                "vt": "bool"
+            }
+        ],
+        "repeat": "30",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "30",
+        "topic": "",
+        "x": 190,
+        "y": 120,
+        "wires": [
+            [
+                "fn_mqtt_aggregate_30s"
+            ]
+        ]
+    },
+    {
+        "id": "fn_mqtt_aggregate_30s",
+        "type": "function",
+        "z": "tab_mqtt_aggregation",
+        "name": "Snittberegn MQTT-målinger (30 s)",
+        "func": "const windows = context.get('windows') || {};\nconst windowSeconds = 30;\n\nfunction copy(value) { return JSON.parse(JSON.stringify(value)); }\nfunction average(numbers) { const finite = numbers.filter(Number.isFinite); return finite.length ? finite.reduce((sum, value) => sum + value, 0) / finite.length : null; }\nfunction keepLatest(key) { return /(^_|raw|register|timestamp|event_id|cumulative|accumulated|energy_|sample_|slave_|^baud$|^decimal|^inf_|^reference_|^meters_per_|^port$)/i.test(key); }\nfunction merge(values, key) {\n    const last = values[values.length - 1];\n    if (keepLatest(key)) return copy(last);\n    if (typeof last === 'number') return average(values);\n    if (Array.isArray(last)) {\n        if (last.every(Number.isFinite) && values.every(value => Array.isArray(value) && value.length === last.length && value.every(Number.isFinite))) return last.map((_, index) => average(values.map(value => value[index])));\n        return copy(last);\n    }\n    if (last && typeof last === 'object') {\n        const result = {};\n        for (const childKey of Object.keys(last)) result[childKey] = merge(values.map(value => value && value[childKey]), childKey);\n        return result;\n    }\n    return copy(last);\n}\nfunction flush() {\n    const now = new Date().toISOString();\n    const output = [];\n    for (const topic of Object.keys(windows)) {\n        const samples = windows[topic];\n        if (!samples.length) continue;\n        const latest = samples[samples.length - 1];\n        const result = copy(latest);\n        result.payload = merge(samples.map(sample => sample.payload), 'payload');\n        if (result.payload && typeof result.payload === 'object' && !Array.isArray(result.payload)) {\n            result.payload.timestamp = now;\n            result.payload.event_id = `${result.payload.device_id || result.payload.meter_id || 'telemetry'}-mean30-${now}`;\n            result.payload.aggregation = { method: 'mean', window_seconds: windowSeconds, sample_count: samples.length, source_end_timestamp: latest.payload && latest.payload.timestamp ? latest.payload.timestamp : null };\n        }\n        output.push(result);\n    }\n    context.set('windows', {});\n    return output;\n}\n\nif (msg._aggregate_flush === true) return [flush()];\nif (!msg.topic || typeof msg.payload === 'undefined') return null;\nif (msg.payload && typeof msg.payload === 'object' && !Array.isArray(msg.payload) && msg.payload.status && !['ok', 'simulated'].includes(msg.payload.status)) return msg;\nconst bucket = windows[msg.topic] || [];\nbucket.push(copy(msg));\nif (bucket.length > 100) bucket.shift();\nwindows[msg.topic] = bucket;\ncontext.set('windows', windows);\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 120,
+        "wires": [
+            [
+                "mqtt_aggregated_30s"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_aggregated_30s",
+        "type": "mqtt out",
+        "z": "tab_mqtt_aggregation",
+        "name": "Publiser målegjennomsnitt (30 s)",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "application/json",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker",
+        "x": 780,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "mqtt_qdw90a_state",
+        "type": "mqtt out",
+        "z": "tab_qdw90a_modbus",
+        "name": "Publiser QDW90A-status",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "application/json",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_local_broker_kwh_01",
+        "x": 940,
+        "y": 120,
+        "wires": []
+    }
+]

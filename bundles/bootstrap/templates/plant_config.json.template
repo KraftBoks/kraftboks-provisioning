@@ -1,16 +1,16 @@
 {
   "plant": {
-    "name": "KraftBoks gateway",
-    "short_name": "KraftBoks",
+    "name": "__PLANT_NAME__",
+    "short_name": "__PLANT_NAME__",
     "site_id": "__SITE_ID__",
-    "description": "Standard gateway profile before site-specific commissioning"
+    "description": "KraftBoks anleggsovervåking"
   },
   "assets": [],
   "cameras": [],
   "devices": [
     {
       "id": "gateway_health",
-      "name": "KraftBoks gateway",
+      "name": "KraftBoks gateway – __PLANT_NAME__",
       "type": "gateway_health",
       "section": "Gateway",
       "enabled": true,
