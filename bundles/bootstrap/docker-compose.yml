@@ -74,6 +74,7 @@ services:
       SITE_ID: "${SITE_ID}"
       MQTT_HOST: 127.0.0.1
       MQTT_PORT: "1883"
+      MQTT_TOPIC: "sites/${SITE_ID}/telemetry/#"
       MQTT_CLIENT_ID: kraftboks-hmi-${SITE_ID}-gateway
       HMI_PROFILE: gateway
       OUTBOX_DB: /data/outbox.sqlite3

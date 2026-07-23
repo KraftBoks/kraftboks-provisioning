@@ -5,9 +5,63 @@
     "site_id": "__SITE_ID__",
     "description": "KraftBoks anleggsovervåking"
   },
-  "assets": [],
+  "assets": [
+    { "id": "generator_1", "name": "Generator 1", "kind": "generator", "enabled": true },
+    { "id": "generator_2", "name": "Generator 2", "kind": "generator", "enabled": true }
+  ],
   "cameras": [],
   "devices": [
+    {
+      "id": "nettanalysator_gen1",
+      "name": "Nettanalysator Gen1",
+      "type": "power_analyzer",
+      "section": "Generator 1",
+      "asset_id": "generator_1",
+      "enabled": true,
+      "connection": { "protocol": "modbus_rtu", "channel": "CH1", "slave": 1, "model": "WM3-96", "mqtt_topic": "sites/__SITE_ID__/telemetry/modbus/nettanalysator_gen1/state" },
+      "measurements": [
+        { "id": "g1_power", "label": "Effekt", "unit": "kW", "decimals": 1, "overview": true, "mqtt_path": "active_power_kw" },
+        { "id": "g1_voltage", "label": "Spenning", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l1_l2_v" },
+        { "id": "g1_frequency", "label": "Frekvens", "unit": "Hz", "decimals": 2, "mqtt_path": "frequency_hz" }
+      ]
+    },
+    {
+      "id": "nettanalysator_gen2",
+      "name": "Nettanalysator Gen2",
+      "type": "power_analyzer",
+      "section": "Generator 2",
+      "asset_id": "generator_2",
+      "enabled": true,
+      "connection": { "protocol": "modbus_rtu", "channel": "CH1", "slave": 2, "model": "WM3-96", "mqtt_topic": "sites/__SITE_ID__/telemetry/modbus/nettanalysator_gen2/state" },
+      "measurements": [
+        { "id": "g2_power", "label": "Effekt", "unit": "kW", "decimals": 1, "overview": true, "mqtt_path": "active_power_kw" },
+        { "id": "g2_voltage", "label": "Spenning", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l1_l2_v" },
+        { "id": "g2_frequency", "label": "Frekvens", "unit": "Hz", "decimals": 2, "mqtt_path": "frequency_hz" }
+      ]
+    },
+    {
+      "id": "flowmeter_rorgate",
+      "name": "Flowmeter rørgate",
+      "type": "flow_meter",
+      "section": "Vann og miljø",
+      "enabled": true,
+      "connection": { "protocol": "modbus_rtu", "channel": "CH2", "slave": 1, "model": "GTUL31B", "mqtt_topic": "sites/__SITE_ID__/telemetry/modbus/flowmeter_rorgate/state" },
+      "measurements": [
+        { "id": "water_flow", "label": "Vannflow inn", "unit": "m³/s", "decimals": 2, "overview": true, "mqtt_path": "instantaneous_flow_m3s" }
+      ]
+    },
+    {
+      "id": "trykkfoler_rorgate",
+      "name": "Trykkføler rørgate",
+      "type": "pressure_sensor",
+      "section": "Vann og miljø",
+      "enabled": true,
+      "connection": { "protocol": "modbus_rtu", "channel": "CH3", "slave": 1, "model": "QDW90A", "mqtt_topic": "sites/__SITE_ID__/telemetry/modbus/trykkfoler_rorgate/state" },
+      "measurements": [
+        { "id": "water_pressure", "label": "Trykk", "unit": "bar", "decimals": 2, "mqtt_path": "pressure_bar" },
+        { "id": "estimated_water_level", "label": "Estimert vannstand", "unit": "m", "decimals": 2, "overview": true, "mqtt_path": "estimated_water_level_m" }
+      ]
+    },
     {
       "id": "gateway_health",
       "name": "KraftBoks gateway – __PLANT_NAME__",

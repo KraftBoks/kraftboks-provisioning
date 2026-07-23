@@ -11,6 +11,7 @@ if [ -f "$marker" ]; then
 fi
 
 test -f /data/package.json
+test -f /data/package-lock.json
 mkdir -p /data/node_modules
-npm install --omit=dev --unsafe-perm --no-audit --no-fund --no-update-notifier
+npm ci --omit=dev --unsafe-perm --no-audit --no-fund --no-update-notifier
 touch "$marker"

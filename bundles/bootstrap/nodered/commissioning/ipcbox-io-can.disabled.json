@@ -1,0 +1,50 @@
+[
+  {
+    "id": "tab_ipcbox_commissioning",
+    "type": "tab",
+    "label": "IPCBOX IO/CAN commissioning (DISABLED)",
+    "disabled": true,
+    "info": "Disabled by default. Enabling this tab can operate physical outputs. Verify wiring and electrical limits first."
+  },
+  {
+    "id": "inject_ipcbox_status",
+    "type": "inject",
+    "z": "tab_ipcbox_commissioning",
+    "name": "Read safe IO status",
+    "props": [],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "x": 170,
+    "y": 80,
+    "wires": [["exec_ipcbox_status"]]
+  },
+  {
+    "id": "exec_ipcbox_status",
+    "type": "exec",
+    "z": "tab_ipcbox_commissioning",
+    "command": "node /usr/local/bin/kb-ipcbox-io-client.js status",
+    "addpay": "",
+    "append": "",
+    "useSpawn": "false",
+    "timer": "",
+    "winHide": false,
+    "oldrc": false,
+    "name": "Host IO socket",
+    "x": 450,
+    "y": 80,
+    "wires": [[], [], []]
+  },
+  {
+    "id": "comment_outputs_disabled",
+    "type": "comment",
+    "z": "tab_ipcbox_commissioning",
+    "name": "OUT1/OUT2, buzzer, LEDs and CAN transmit intentionally have no automatic inject nodes",
+    "info": "Use explicit manual commands only after commissioning approval.",
+    "x": 390,
+    "y": 140,
+    "wires": []
+  }
+]
