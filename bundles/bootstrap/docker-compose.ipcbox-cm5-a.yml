@@ -1,10 +1,9 @@
-# IPCBOX-CM5-B fieldbus extension.  It is selected only by the firstboot
-# hardware-profile prompt; generic Raspberry Pi installations never receive
-# these carrier-board device mappings.
+# IPCBOX-CM5-A has four RS485 channels. The stable aliases are created by the
+# host hardware profile; Node-RED remains unprivileged.
 services:
   nodered:
     group_add:
-      - "20" # dialout on Raspberry Pi OS
+      - "20"
     devices:
       - /dev/ttyAMA0:/dev/ttyAMA0
       - /dev/ttyAMA2:/dev/ttyAMA2
