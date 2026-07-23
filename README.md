@@ -9,7 +9,7 @@ separate secret-management path.
 
 ## Bootstrap bundle
 
-`v0.1.9` provides the standard gateway platform: Mosquitto, Node-RED with the
+`v0.1.10` provides the standard gateway platform: Mosquitto, Node-RED with the
 portable Gursli pilot baseline flows and their required Node-RED nodes, local
 outbox relay, Mini-HMI API/web and the Headscale-bound access proxy start
 automatically after firstboot. Thermal bridge and MediaMTX/FFmpeg are Compose
@@ -29,7 +29,8 @@ The generated HMI configuration follows the selected `SITE_ID`, includes the
 ten portable pilot-baseline devices, ten overview measurements and four
 gateway/cloud status fields, and subscribes to
 `sites/<SITE_ID>/telemetry/#`. The bundle uses Node-RED 5.0.1 Debian and
-Mini-HMI `0.0.5`.
+Mini-HMI `0.0.6`, which reconnects automatically when MQTT becomes available
+after the HMI starts.
 
 The release asset is a gzip tarball whose root contains `docker-compose.yml`.
 It also contains generic HMI and access-proxy templates; firstboot renders the
