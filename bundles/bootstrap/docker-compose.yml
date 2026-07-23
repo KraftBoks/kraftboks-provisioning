@@ -63,7 +63,7 @@ services:
       - /opt/kraftboks/data/outbox:/data
 
   hmi-api:
-    image: ghcr.io/kraftboks/mini-hmi-api:0.0.5
+    image: ghcr.io/kraftboks/mini-hmi-api:0.0.6
     container_name: kraftboks-hmi-${SITE_ID}-api
     restart: unless-stopped
     network_mode: host
@@ -84,7 +84,7 @@ services:
       - /opt/kraftboks/data/outbox:/data:ro
 
   hmi-web:
-    image: ghcr.io/kraftboks/mini-hmi-web:0.0.5
+    image: ghcr.io/kraftboks/mini-hmi-web:0.0.6
     container_name: kraftboks-hmi-${SITE_ID}-web
     restart: unless-stopped
     network_mode: host
