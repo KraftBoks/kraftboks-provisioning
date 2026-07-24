@@ -1,6 +1,7 @@
 services:
   mosquitto:
     image: eclipse-mosquitto:2.0
+    container_name: kraftboks-mosquitto-${SITE_ID}
     restart: unless-stopped
     network_mode: host
     volumes:
@@ -18,6 +19,7 @@ services:
     # nodered-deps installs the contributed nodes into the persistent /data
     # volume exactly once before Node-RED is allowed to start.
     image: nodered/node-red:5.0.1-debian
+    container_name: kraftboks-nodered-${SITE_ID}
     restart: unless-stopped
     network_mode: host
     depends_on:
