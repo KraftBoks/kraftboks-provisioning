@@ -47,7 +47,7 @@ services:
       - ./nodered/install-deps.sh:/bootstrap/install-deps.sh:ro
 
   outbox-relay:
-    image: ghcr.io/kraftboks/outbox-relay:0.0.3
+    image: ghcr.io/kraftboks/outbox-relay:0.0.7
     container_name: kraftboks-outbox-relay
     restart: unless-stopped
     network_mode: host
@@ -65,7 +65,7 @@ services:
       - /opt/kraftboks/data/outbox:/data
 
   hmi-api:
-    image: ghcr.io/kraftboks/mini-hmi-api:0.0.6
+    image: ghcr.io/kraftboks/mini-hmi-api:0.0.7
     container_name: kraftboks-hmi-${SITE_ID}-api
     restart: unless-stopped
     network_mode: host
@@ -86,7 +86,7 @@ services:
       - /opt/kraftboks/data/outbox:/data:ro
 
   hmi-web:
-    image: ghcr.io/kraftboks/mini-hmi-web:0.0.6
+    image: ghcr.io/kraftboks/mini-hmi-web:0.0.7
     container_name: kraftboks-hmi-${SITE_ID}-web
     restart: unless-stopped
     network_mode: host
@@ -94,7 +94,7 @@ services:
       - hmi-api
 
   access-proxy:
-    image: ghcr.io/kraftboks/access-proxy:0.0.3
+    image: ghcr.io/kraftboks/access-proxy:0.0.7
     container_name: kraftboks-access-proxy
     restart: unless-stopped
     network_mode: host
@@ -108,7 +108,7 @@ services:
 
   thermal-camera-bridge:
     profiles: ["thermal"]
-    image: ghcr.io/kraftboks/thermal-camera-bridge:0.0.3
+    image: ghcr.io/kraftboks/thermal-camera-bridge:0.0.7
     container_name: kraftboks-thermal-camera
     restart: unless-stopped
     network_mode: host
@@ -127,6 +127,7 @@ services:
       STATE_PUBLISH_MS: "5000"
       FRAME_PUBLISH_MS: "5000"
       TCP_RETRY_MS: "3000"
+      FRAME_STALE_MS: "10000"
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8090/health || exit 1"]
       interval: 30s
