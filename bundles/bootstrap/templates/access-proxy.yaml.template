@@ -1,6 +1,11 @@
-# Generated locally at firstboot.  The proxy exposes no device ports until a
-# site-specific allowlist is deliberately added during commissioning.
+# Generated locally at firstboot. The camera relay binds only to the gateway's
+# Headscale address; nftables admits port 10554 only from the cloud mesh node.
 listen_address: __TAILSCALE_IP__
 health_address: 127.0.0.1
 health_port: 9100
-services: []
+services:
+  - id: cloud-camera-high
+    protocol: tcp
+    listen_port: 10554
+    target_host: 127.0.0.1
+    target_port: 8554

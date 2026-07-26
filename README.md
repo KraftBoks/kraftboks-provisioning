@@ -9,7 +9,7 @@ separate secret-management path.
 
 ## Bootstrap bundle
 
-`v0.1.12` provides the standard gateway platform: Mosquitto, Node-RED with the
+`v0.1.13` provides the standard gateway platform: Mosquitto, Node-RED with the
 portable Gursli pilot baseline flows and their required Node-RED nodes, local
 outbox relay, Mini-HMI API/web and the Headscale-bound access proxy start
 automatically after firstboot. Thermal bridge and MediaMTX/FFmpeg are Compose
@@ -40,5 +40,7 @@ V11 uses the aligned `0.0.7` KraftBoks image set. The thermal bridge monitors
 frame freshness and reconnects its TCP session when a camera connection is
 stale, including after gateway/camera restart in either order.
 It also contains generic HMI and access-proxy templates; firstboot renders the
-site ID and current Headscale address locally. Use its published SHA-256 with
-the firstboot wizard.
+site ID and current Headscale address locally. Version `0.1.13` adds the
+Headscale-bound TCP relay from port 10554 to the local `camerahigh` MediaMTX
+stream. The image firewall permits that port only from the cloud node
+`100.64.0.3`. Use the release's published SHA-256 with the firstboot wizard.
