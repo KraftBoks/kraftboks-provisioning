@@ -81,6 +81,8 @@ services:
       HMI_PROFILE: gateway
       OUTBOX_DB: /data/outbox.sqlite3
       KRAFTBOKS_HMI_CONFIG: /config/plant_config.json
+      CAMERA_USERNAME: "${CAMERA_USERNAME}"
+      CAMERA_PASSWORD: "${CAMERA_PASSWORD}"
     volumes:
       - ./config/plant_config.json:/config/plant_config.json:ro
       - /opt/kraftboks/data/outbox:/data:ro
