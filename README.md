@@ -33,6 +33,12 @@ Mini-HMI `0.0.13`, which reconnects automatically when MQTT becomes available
 after the HMI starts and provides the config-driven generator, alarm, thermal,
 gateway and theme-aware logo views.
 
+The Node-RED alarm tab uses one Function node per alarm instead of a separate
+rule file. It includes a disabled copy template, shared retained
+state/event/ACK publishing for local and cloud HMI, an optional SMS/e-mail
+handoff, and an active pilot rule for `thermal-01`: `avg_c > 50 °C`, cleared
+at `avg_c <= 45 °C`.
+
 All host-networked containers use the gateway's stable local `dnsmasq`
 listener at `127.0.0.1`. Docker otherwise snapshots the current uplink
 resolver when a container is created, which can leave cloud services using a
@@ -56,5 +62,7 @@ stream. The image firewall permits that port only from the cloud node
 site environment only to the local HMI API, restoring ONVIF PTZ without
 exposing the credentials to other containers. Version `0.1.15` adds the full
 WM3 measurement template and an explicitly disabled thermal-camera template;
-physical camera commissioning must enable it. Use the release's published
+physical camera commissioning must enable it. It also replaces the external
+alarm-rule configuration with one copyable Function node per alarm and adds
+the `thermal-01` high-average-temperature alarm. Use the release's published
 SHA-256 with the firstboot wizard.

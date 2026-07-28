@@ -2511,15 +2511,25 @@
   {
     "id": "tab_alarm_engine",
     "type": "tab",
-    "label": "Alarmmotor template",
+    "label": "Alarmmotor",
     "disabled": false,
-    "info": "Konfigurasjonsdrevet alarmmotor. Eksempelreglene er deaktivert til terskler og målepunkter er verifisert på anlegget."
+    "info": "Én Function-node per alarm. Kopier den deaktiverte malen, fyll inn topic/felt/terskel/tekst og koble den mellom telemetriinngangen og den felles alarmmotoren."
+  },
+  {
+    "id": "comment_alarm_copy_help",
+    "type": "comment",
+    "z": "tab_alarm_engine",
+    "name": "Kopier MAL-noden for hver ny alarm. Ingen ekstern regelfil brukes.",
+    "info": "Hver alarm evalueres i sin egen Function-node. Den felles alarmmotoren håndterer tilstand, MQTT, kvittering og varslingsgren.",
+    "x": 380,
+    "y": 40,
+    "wires": []
   },
   {
     "id": "mqttin_alarm_telemetry",
     "type": "mqtt in",
     "z": "tab_alarm_engine",
-    "name": "Telemetri til alarmmotor",
+    "name": "Telemetri til alarmfunksjoner",
     "topic": "sites/+/telemetry/#",
     "qos": "1",
     "datatype": "json",
@@ -2532,6 +2542,47 @@
     "y": 120,
     "wires": [
       [
+        "fn_alarm_thermal_high_average"
+      ]
+    ]
+  },
+  {
+    "id": "fn_alarm_thermal_high_average",
+    "type": "function",
+    "z": "tab_alarm_engine",
+    "name": "Termokamera avg_c > 50 °C",
+    "func": "// Alarm: thermal-01 average temperature above 50 °C.\n// Copy the separate template node when adding another alarm.\nconst expectedTopic = \"sites/gursli_pilot/telemetry/thermal/thermal-01/state\";\nif (msg.topic !== expectedTopic) return null;\n\nlet payload = msg.payload;\nif (Buffer.isBuffer(payload)) {\n    try { payload = JSON.parse(payload.toString(\"utf8\")); } catch (_) { return null; }\n}\n\nconst value = Number(payload?.avg_c);\nif (!Number.isFinite(value)) return null;\n\nmsg.alarm = {\n    id: \"thermal_01_high_average_temperature\",\n    active: value > 50,\n    clear: value <= 45,\n    value,\n    threshold: 50,\n    unit: \"°C\",\n    delay_seconds: 0,\n    severity: \"critical\",\n    source: expectedTopic,\n    message: \"Detektert høy temperatur fra termokamera\"\n};\nreturn msg;",
+    "outputs": 1,
+    "timeout": "",
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 470,
+    "y": 120,
+    "wires": [
+      [
+        "fn_alarm_engine"
+      ]
+    ]
+  },
+  {
+    "id": "fn_alarm_template",
+    "type": "function",
+    "z": "tab_alarm_engine",
+    "name": "MAL – kopier for ny alarm",
+    "func": "// MAL – kopier denne Function-noden for hver ny alarm.\n// 1. Gi noden og alarm-ID-en et unikt navn.\n// 2. Sett MQTT-topic, felt, terskel, hysterese, alvorlighetsgrad og tekst.\n// 3. Koble \"Telemetri til alarmfunksjoner\" -> denne noden -> \"Alarmmotor\".\nconst expectedTopic = \"sites/gursli_pilot/telemetry/REPLACE_DEVICE/state\";\nif (msg.topic !== expectedTopic) return null;\n\nlet payload = msg.payload;\nif (Buffer.isBuffer(payload)) {\n    try { payload = JSON.parse(payload.toString(\"utf8\")); } catch (_) { return null; }\n}\n\nconst value = Number(payload?.REPLACE_FIELD);\nif (!Number.isFinite(value)) return null;\n\nmsg.alarm = {\n    id: \"replace_with_unique_alarm_id\",\n    active: value > 100,\n    clear: value <= 95,\n    value,\n    threshold: 100,\n    unit: \"REPLACE_UNIT\",\n    delay_seconds: 0,\n    severity: \"warning\",\n    source: expectedTopic,\n    message: \"Erstatt med tydelig alarmtekst\"\n};\nreturn msg;",
+    "outputs": 1,
+    "timeout": "",
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "d": true,
+    "x": 450,
+    "y": 200,
+    "wires": [
+      [
         "fn_alarm_engine"
       ]
     ]
@@ -2540,7 +2591,7 @@
     "id": "mqttin_alarm_ack",
     "type": "mqtt in",
     "z": "tab_alarm_engine",
-    "name": "Kvitter alarm",
+    "name": "Kvitter alarm fra HMI",
     "topic": "sites/+/commands/alarm_ack/request",
     "qos": "1",
     "datatype": "json",
@@ -2549,8 +2600,8 @@
     "rap": true,
     "rh": 0,
     "inputs": 0,
-    "x": 160,
-    "y": 180,
+    "x": 180,
+    "y": 300,
     "wires": [
       [
         "fn_alarm_engine"
@@ -2561,22 +2612,23 @@
     "id": "fn_alarm_engine",
     "type": "function",
     "z": "tab_alarm_engine",
-    "name": "Konfigurasjonsdrevet alarmmotor",
-    "func": "// Node-RED function node contract. Wire telemetry/# and alarm_ack/request into\n// the input. Wire outputs to MQTT state (retain), event (no retain), and command\n// result (no retain). Set ALARM_RULES_JSON to the reviewed site rules.\nconst siteId = env.get(\"SITE_ID\") || \"gursli_pilot\";\nconst commandTopic = `sites/${siteId}/commands/alarm_ack/request`;\nconst now = Date.now();\nlet payload = msg.payload;\nif (Buffer.isBuffer(payload)) {\n    try { payload = JSON.parse(payload.toString(\"utf8\")); } catch (_) { return null; }\n}\nif (!payload || typeof payload !== \"object\") return null;\n\nconst state = context.get(\"alarm_state\") || {};\nconst processed = context.get(\"processed_commands\") || {};\n\nfunction publish(alarm, event, commandId) {\n    const current = state[alarm.id];\n    const body = {\n        alarm_id: alarm.id,\n        state: current.state,\n        severity: alarm.severity,\n        source: alarm.topic,\n        message: alarm.message,\n        started_at: current.started_at || null,\n        changed_at: new Date().toISOString(),\n        acknowledged_at: current.acknowledged_at || null,\n        occurrence_id: current.occurrence_id || null,\n        event,\n        command_id: commandId || null\n    };\n    return [\n        { topic: `sites/${siteId}/alarms/${alarm.id}/state`, payload: body, qos: \"1\", retain: \"true\" },\n        event ? { topic: `sites/${siteId}/alarms/${alarm.id}/event`, payload: body, qos: \"1\", retain: \"false\" } : null\n    ];\n}\n\nif (msg.topic === commandTopic) {\n    const commandId = String(payload.command_id || \"\");\n    const alarmId = String(payload.alarm_id || \"\");\n    if (!/^[0-9a-f-]{36}$/i.test(commandId) || processed[commandId]) return null;\n    processed[commandId] = now;\n    const current = state[alarmId];\n    let status = \"rejected\";\n    let outputs = [null, null];\n    if (current && current.state === \"active_unacknowledged\") {\n        current.state = \"active_acknowledged\";\n        current.acknowledged_at = new Date().toISOString();\n        const alarm = (global.get(\"alarm_rules\") || []).find((rule) => rule.id === alarmId) || {\n            id: alarmId, topic: current.source || \"unknown\", severity: current.severity || \"warning\", message: current.message || alarmId\n        };\n        outputs = publish(alarm, \"acknowledged\", commandId);\n        status = \"accepted\";\n    }\n    context.set(\"alarm_state\", state);\n    context.set(\"processed_commands\", processed);\n    return [outputs[0], outputs[1], {\n        topic: `sites/${siteId}/commands/alarm_ack/${commandId}/result`,\n        payload: { command_id: commandId, status, timestamp: new Date().toISOString() },\n        qos: \"1\", retain: \"false\"\n    }];\n}\n\nlet rules = global.get(\"alarm_rules\") || [];\nconst configuredRules = env.get(\"ALARM_RULES_JSON\");\ntry {\n    if (configuredRules) rules = JSON.parse(configuredRules);\n} catch (_) {\n    node.warn(\"ALARM_RULES_JSON er ugyldig; beholder reglene fra flow-templaten\");\n}\nglobal.set(\"alarm_rules\", rules);\nfor (const alarm of rules.filter((rule) => rule.enabled && rule.topic === msg.topic)) {\n    const value = String(alarm.path || \"\").split(\".\").reduce((item, key) => item == null ? undefined : item[key], payload);\n    if (!Number.isFinite(Number(value))) continue;\n    const active = alarm.operator === \"lt\" ? Number(value) < alarm.threshold : Number(value) > alarm.threshold;\n    const clear = alarm.operator === \"lt\" ? Number(value) >= alarm.clear_threshold : Number(value) <= alarm.clear_threshold;\n    const current = state[alarm.id] || { state: \"normal\", pending_since: null };\n    if (active && current.state === \"normal\") {\n        current.pending_since ||= now;\n        if (now - current.pending_since >= Number(alarm.delay_seconds || 0) * 1000) {\n            current.state = \"active_unacknowledged\";\n            current.started_at = new Date().toISOString();\n            current.occurrence_id = `${alarm.id}-${now}`;\n            current.pending_since = null;\n            state[alarm.id] = current;\n            context.set(\"alarm_state\", state);\n            const outputs = publish(alarm, \"activated\");\n            return [outputs[0], outputs[1], null];\n        }\n    } else if (clear && current.state !== \"normal\") {\n        current.state = \"normal\";\n        current.pending_since = null;\n        state[alarm.id] = current;\n        context.set(\"alarm_state\", state);\n        const outputs = publish(alarm, \"cleared\");\n        return [outputs[0], outputs[1], null];\n    } else if (!active) {\n        current.pending_since = null;\n        state[alarm.id] = current;\n        context.set(\"alarm_state\", state);\n    }\n}\nreturn null;",
+    "name": "Felles alarmmotor og ACK",
+    "func": "// Shared alarm state machine. Individual Function nodes evaluate one alarm\n// each and send a normalized msg.alarm object here. ACK requests use the same\n// input and are matched against the state stored for the alarm ID.\nconst topicParts = String(msg.topic || \"\").split(\"/\");\nconst siteId = env.get(\"SITE_ID\") || topicParts[1] || \"unknown\";\nconst commandTopic = `sites/${siteId}/commands/alarm_ack/request`;\nconst now = Date.now();\nconst isoNow = new Date(now).toISOString();\nlet payload = msg.payload;\n\nif (Buffer.isBuffer(payload)) {\n    try { payload = JSON.parse(payload.toString(\"utf8\")); } catch (_) { return null; }\n}\nif (!payload || typeof payload !== \"object\") return null;\n\nconst states = context.get(\"alarm_states\") || {};\nconst processed = context.get(\"processed_commands\") || {};\n\nfunction publish(alarmId, event, commandId) {\n    const current = states[alarmId];\n    const body = {\n        alarm_id: alarmId,\n        state: current.state,\n        severity: current.severity,\n        source: current.source,\n        message: current.message,\n        started_at: current.started_at || null,\n        changed_at: isoNow,\n        acknowledged_at: current.acknowledged_at || null,\n        occurrence_id: current.occurrence_id || null,\n        event,\n        command_id: commandId || null,\n        value: current.value ?? null,\n        threshold: current.threshold ?? null,\n        unit: current.unit || null\n    };\n    return [\n        {\n            topic: `sites/${siteId}/alarms/${alarmId}/state`,\n            payload: body,\n            qos: \"1\",\n            retain: \"true\"\n        },\n        event ? {\n            topic: `sites/${siteId}/alarms/${alarmId}/event`,\n            payload: body,\n            qos: \"1\",\n            retain: \"false\"\n        } : null\n    ];\n}\n\nif (msg.topic === commandTopic) {\n    const commandId = String(payload.command_id || \"\");\n    const alarmId = String(payload.alarm_id || \"\");\n    if (!/^[0-9a-f-]{36}$/i.test(commandId) || processed[commandId]) return null;\n\n    processed[commandId] = now;\n    const current = states[alarmId];\n    let status = \"rejected\";\n    let outputs = [null, null];\n\n    if (current && current.state === \"active_unacknowledged\") {\n        current.state = \"active_acknowledged\";\n        current.acknowledged_at = isoNow;\n        outputs = publish(alarmId, \"acknowledged\", commandId);\n        status = \"accepted\";\n    }\n\n    context.set(\"alarm_states\", states);\n    context.set(\"processed_commands\", processed);\n    return [\n        outputs[0],\n        outputs[1],\n        {\n            topic: `sites/${siteId}/commands/alarm_ack/${commandId}/result`,\n            payload: {\n                command_id: commandId,\n                alarm_id: alarmId,\n                status,\n                timestamp: isoNow\n            },\n            qos: \"1\",\n            retain: \"false\"\n        }\n    ];\n}\n\nconst alarm = msg.alarm;\nif (!alarm || typeof alarm !== \"object\") return null;\n\nconst alarmId = String(alarm.id || \"\");\nif (!/^[a-z0-9][a-z0-9_-]{2,63}$/i.test(alarmId)) {\n    node.warn(\"Alarmfunksjonen sendte ugyldig alarm-ID\");\n    return null;\n}\nif (typeof alarm.active !== \"boolean\" || typeof alarm.clear !== \"boolean\") {\n    node.warn(`Alarm ${alarmId} mangler boolsk active/clear`);\n    return null;\n}\n\nconst current = states[alarmId] || {\n    state: \"normal\",\n    pending_since: null,\n    started_at: null,\n    acknowledged_at: null,\n    occurrence_id: null\n};\ncurrent.source = alarm.source || msg.topic || \"unknown\";\ncurrent.severity = alarm.severity || \"warning\";\ncurrent.message = alarm.message || alarmId;\ncurrent.value = alarm.value ?? null;\ncurrent.threshold = alarm.threshold ?? null;\ncurrent.unit = alarm.unit || null;\n\nif (alarm.active && current.state === \"normal\") {\n    current.pending_since ||= now;\n    if (now - current.pending_since >= Number(alarm.delay_seconds || 0) * 1000) {\n        current.state = \"active_unacknowledged\";\n        current.started_at = isoNow;\n        current.acknowledged_at = null;\n        current.occurrence_id = `${alarmId}-${now}`;\n        current.pending_since = null;\n        states[alarmId] = current;\n        context.set(\"alarm_states\", states);\n        const outputs = publish(alarmId, \"activated\");\n        return [outputs[0], outputs[1], null];\n    }\n} else if (alarm.clear && current.state !== \"normal\") {\n    current.state = \"normal\";\n    current.pending_since = null;\n    states[alarmId] = current;\n    context.set(\"alarm_states\", states);\n    const outputs = publish(alarmId, \"cleared\");\n    return [outputs[0], outputs[1], null];\n} else if (!alarm.active) {\n    current.pending_since = null;\n}\n\nstates[alarmId] = current;\ncontext.set(\"alarm_states\", states);\nreturn null;",
     "outputs": 3,
     "timeout": "",
     "noerr": 0,
-    "initialize": "global.set(\"alarm_rules\", [\n  {\n    \"id\": \"generator_1_high_temperature\",\n    \"enabled\": false,\n    \"topic\": \"sites/gursli_pilot/telemetry/modbus/vibrasjon_gen1/state\",\n    \"path\": \"temperature_c\",\n    \"operator\": \"gt\",\n    \"threshold\": 85,\n    \"clear_threshold\": 80,\n    \"delay_seconds\": 10,\n    \"severity\": \"critical\",\n    \"message\": \"Generator 1 har høy temperatur\"\n  },\n  {\n    \"id\": \"generator_2_high_temperature\",\n    \"enabled\": false,\n    \"topic\": \"sites/gursli_pilot/telemetry/modbus/vibrasjon_gen2/state\",\n    \"path\": \"temperature_c\",\n    \"operator\": \"gt\",\n    \"threshold\": 85,\n    \"clear_threshold\": 80,\n    \"delay_seconds\": 10,\n    \"severity\": \"critical\",\n    \"message\": \"Generator 2 har høy temperatur\"\n  },\n  {\n    \"id\": \"generator_1_high_vibration\",\n    \"enabled\": false,\n    \"topic\": \"sites/gursli_pilot/telemetry/modbus/vibrasjon_gen1/state\",\n    \"path\": \"velocity_mms.2\",\n    \"operator\": \"gt\",\n    \"threshold\": 6.5,\n    \"clear_threshold\": 5.5,\n    \"delay_seconds\": 5,\n    \"severity\": \"warning\",\n    \"message\": \"Generator 1 har høy vibrasjon\"\n  },\n  {\n    \"id\": \"generator_2_high_vibration\",\n    \"enabled\": false,\n    \"topic\": \"sites/gursli_pilot/telemetry/modbus/vibrasjon_gen2/state\",\n    \"path\": \"velocity_mms.2\",\n    \"operator\": \"gt\",\n    \"threshold\": 6.5,\n    \"clear_threshold\": 5.5,\n    \"delay_seconds\": 5,\n    \"severity\": \"warning\",\n    \"message\": \"Generator 2 har høy vibrasjon\"\n  },\n  {\n    \"id\": \"gateway_high_cpu_temperature\",\n    \"enabled\": false,\n    \"topic\": \"sites/gursli_pilot/telemetry/gateway/cm5/state\",\n    \"path\": \"cpu_temperature_c\",\n    \"operator\": \"gt\",\n    \"threshold\": 80,\n    \"clear_threshold\": 75,\n    \"delay_seconds\": 30,\n    \"severity\": \"warning\",\n    \"message\": \"Gateway har høy CPU-temperatur\"\n  }\n]);",
+    "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 480,
-    "y": 150,
+    "x": 730,
+    "y": 180,
     "wires": [
       [
         "mqttout_alarm_state"
       ],
       [
-        "mqttout_alarm_event"
+        "mqttout_alarm_event",
+        "switch_alarm_notification"
       ],
       [
         "mqttout_alarm_ack_result"
@@ -2587,7 +2639,7 @@
     "id": "mqttout_alarm_state",
     "type": "mqtt out",
     "z": "tab_alarm_engine",
-    "name": "Beholdt alarmstatus",
+    "name": "Beholdt alarmstatus til lokal/sky-HMI",
     "topic": "",
     "qos": "",
     "retain": "",
@@ -2597,15 +2649,15 @@
     "correl": "",
     "expiry": "",
     "broker": "mqtt_local_broker",
-    "x": 800,
-    "y": 110,
+    "x": 1080,
+    "y": 120,
     "wires": []
   },
   {
     "id": "mqttout_alarm_event",
     "type": "mqtt out",
     "z": "tab_alarm_engine",
-    "name": "Alarmhendelse",
+    "name": "Alarmhendelse til lokal/sky-HMI",
     "topic": "",
     "qos": "",
     "retain": "",
@@ -2615,8 +2667,8 @@
     "correl": "",
     "expiry": "",
     "broker": "mqtt_local_broker",
-    "x": 780,
-    "y": 150,
+    "x": 1060,
+    "y": 180,
     "wires": []
   },
   {
@@ -2633,8 +2685,70 @@
     "correl": "",
     "expiry": "",
     "broker": "mqtt_local_broker",
-    "x": 820,
-    "y": 190,
+    "x": 1040,
+    "y": 300,
+    "wires": []
+  },
+  {
+    "id": "switch_alarm_notification",
+    "type": "switch",
+    "z": "tab_alarm_engine",
+    "name": "Kun ny aktiv alarm",
+    "property": "payload.event",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "activated",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 1010,
+    "y": 240,
+    "wires": [
+      [
+        "fn_alarm_notification_template"
+      ]
+    ]
+  },
+  {
+    "id": "fn_alarm_notification_template",
+    "type": "function",
+    "z": "tab_alarm_engine",
+    "name": "Varslingsmal – SMS/e-post",
+    "func": "// Common hand-off for optional SMS/e-mail nodes.\n// Connect this output to the selected provider node and keep credentials in\n// Node-RED credentials, never in the flow JSON.\nconst alarm = msg.payload || {};\nif (alarm.event !== \"activated\") return null;\n\nmsg.notification = {\n    alarm_id: alarm.alarm_id,\n    severity: alarm.severity,\n    subject: `[KraftBoks] ${alarm.message}`,\n    text: `${alarm.message}. Verdi: ${alarm.value ?? \"ukjent\"} ${alarm.unit || \"\"}. ` +\n        `Anlegg: ${env.get(\"SITE_ID\") || \"ukjent\"}. Tid: ${alarm.changed_at}.`,\n    occurrence_id: alarm.occurrence_id\n};\nmsg.payload = msg.notification;\nreturn msg;",
+    "outputs": 1,
+    "timeout": "",
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1260,
+    "y": 240,
+    "wires": [
+      [
+        "debug_alarm_notification"
+      ]
+    ]
+  },
+  {
+    "id": "debug_alarm_notification",
+    "type": "debug",
+    "z": "tab_alarm_engine",
+    "name": "Koble valgt SMS/e-post-node her",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1550,
+    "y": 240,
     "wires": []
   }
 ]
