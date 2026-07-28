@@ -105,6 +105,8 @@ services:
     dns: *kraftboks-host-dns
     depends_on:
       - hmi-api
+    volumes:
+      - ./overlays:/usr/share/nginx/html/overlays:ro
 
   access-proxy:
     image: ghcr.io/kraftboks/access-proxy:0.0.7
