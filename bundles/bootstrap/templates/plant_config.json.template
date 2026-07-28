@@ -10,6 +10,20 @@
     { "id": "generator_2", "name": "Generator 2", "kind": "generator", "capacity_kw": 60, "enabled": true }
   ],
   "cameras": [],
+  "thermal_cameras": [
+    {
+      "id": "thermal_01",
+      "name": "Termokamera",
+      "enabled": false,
+      "asset_id": "generator_1",
+      "frame_path": {
+        "gateway": "/thermal/api/latest",
+        "cloud": "/thermal/__SITE_ID__/thermal-01/api/latest"
+      },
+      "overlay_opacity": 0,
+      "measurement_ids": { "min": "thermal_min", "max": "thermal_max", "avg": "thermal_avg" }
+    }
+  ],
   "devices": [
     {
       "id": "nettanalysator_gen1",
@@ -21,8 +35,16 @@
       "connection": { "protocol": "modbus_rtu", "channel": "CH1", "slave": 1, "model": "WM3-96", "mqtt_topic": "sites/__SITE_ID__/telemetry/modbus/nettanalysator_gen1/state" },
       "measurements": [
         { "id": "g1_power", "label": "Effekt", "unit": "kW", "decimals": 1, "overview": true, "mqtt_path": "active_power_kw" },
-        { "id": "g1_voltage", "label": "Spenning", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l1_l2_v" },
-        { "id": "g1_frequency", "label": "Frekvens", "unit": "Hz", "decimals": 2, "mqtt_path": "frequency_hz" }
+        { "id": "g1_voltage", "label": "Spenning L1-L2", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l1_l2_v" },
+        { "id": "g1_voltage_l2_l3", "label": "Spenning L2-L3", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l2_l3_v" },
+        { "id": "g1_voltage_l3_l1", "label": "Spenning L3-L1", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l3_l1_v" },
+        { "id": "g1_current_l1", "label": "Strøm L1", "unit": "A", "decimals": 1, "mqtt_path": "current_l1_a" },
+        { "id": "g1_current_l2", "label": "Strøm L2", "unit": "A", "decimals": 1, "mqtt_path": "current_l2_a" },
+        { "id": "g1_current_l3", "label": "Strøm L3", "unit": "A", "decimals": 1, "mqtt_path": "current_l3_a" },
+        { "id": "g1_frequency", "label": "Frekvens", "unit": "Hz", "decimals": 2, "mqtt_path": "frequency_hz" },
+        { "id": "g1_power_factor", "label": "Effektfaktor", "unit": "", "decimals": 3, "mqtt_path": "power_factor" },
+        { "id": "g1_energy_import", "label": "Importert energi", "unit": "kWh", "decimals": 1, "mqtt_path": "energy_import_kwh" },
+        { "id": "g1_energy_export", "label": "Eksportert energi", "unit": "kWh", "decimals": 1, "mqtt_path": "energy_export_kwh" }
       ]
     },
     {
@@ -48,8 +70,16 @@
       "connection": { "protocol": "modbus_rtu", "channel": "CH1", "slave": 2, "model": "WM3-96", "mqtt_topic": "sites/__SITE_ID__/telemetry/modbus/nettanalysator_gen2/state" },
       "measurements": [
         { "id": "g2_power", "label": "Effekt", "unit": "kW", "decimals": 1, "overview": true, "mqtt_path": "active_power_kw" },
-        { "id": "g2_voltage", "label": "Spenning", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l1_l2_v" },
-        { "id": "g2_frequency", "label": "Frekvens", "unit": "Hz", "decimals": 2, "mqtt_path": "frequency_hz" }
+        { "id": "g2_voltage", "label": "Spenning L1-L2", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l1_l2_v" },
+        { "id": "g2_voltage_l2_l3", "label": "Spenning L2-L3", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l2_l3_v" },
+        { "id": "g2_voltage_l3_l1", "label": "Spenning L3-L1", "unit": "V", "decimals": 1, "mqtt_path": "voltage_l3_l1_v" },
+        { "id": "g2_current_l1", "label": "Strøm L1", "unit": "A", "decimals": 1, "mqtt_path": "current_l1_a" },
+        { "id": "g2_current_l2", "label": "Strøm L2", "unit": "A", "decimals": 1, "mqtt_path": "current_l2_a" },
+        { "id": "g2_current_l3", "label": "Strøm L3", "unit": "A", "decimals": 1, "mqtt_path": "current_l3_a" },
+        { "id": "g2_frequency", "label": "Frekvens", "unit": "Hz", "decimals": 2, "mqtt_path": "frequency_hz" },
+        { "id": "g2_power_factor", "label": "Effektfaktor", "unit": "", "decimals": 3, "mqtt_path": "power_factor" },
+        { "id": "g2_energy_import", "label": "Importert energi", "unit": "kWh", "decimals": 1, "mqtt_path": "energy_import_kwh" },
+        { "id": "g2_energy_export", "label": "Eksportert energi", "unit": "kWh", "decimals": 1, "mqtt_path": "energy_export_kwh" }
       ]
     },
     {
@@ -118,6 +148,20 @@
       "enabled": false,
       "measurements": [
         { "id": "grid_import", "label": "Importert energi", "unit": "kWh", "decimals": 1 }
+      ]
+    },
+    {
+      "id": "thermal_01",
+      "name": "Termokamera",
+      "type": "thermal_camera",
+      "section": "Kamera",
+      "asset_id": "generator_1",
+      "enabled": false,
+      "connection": { "protocol": "mqtt", "mqtt_topic": "sites/__SITE_ID__/telemetry/thermal/thermal-01/state" },
+      "measurements": [
+        { "id": "thermal_min", "label": "Minimumstemperatur", "unit": "°C", "decimals": 2, "mqtt_path": "min_c" },
+        { "id": "thermal_max", "label": "Maksimumstemperatur", "unit": "°C", "decimals": 2, "mqtt_path": "max_c" },
+        { "id": "thermal_avg", "label": "Gjennomsnittstemperatur", "unit": "°C", "decimals": 2, "mqtt_path": "avg_c" }
       ]
     },
     {

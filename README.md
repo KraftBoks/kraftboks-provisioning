@@ -9,7 +9,7 @@ separate secret-management path.
 
 ## Bootstrap bundle
 
-`v0.1.14` provides the standard gateway platform: Mosquitto, Node-RED with the
+`v0.1.15` provides the standard gateway platform: Mosquitto, Node-RED with the
 portable Gursli pilot baseline flows and their required Node-RED nodes, local
 outbox relay, Mini-HMI API/web and the Headscale-bound access proxy start
 automatically after firstboot. Thermal bridge and MediaMTX/FFmpeg are Compose
@@ -29,8 +29,9 @@ The generated HMI configuration follows the selected `SITE_ID`, includes the
 ten portable pilot-baseline devices, ten overview measurements and four
 gateway/cloud status fields, and subscribes to
 `sites/<SITE_ID>/telemetry/#`. The bundle uses Node-RED 5.0.1 Debian and
-Mini-HMI `0.0.7`, which reconnects automatically when MQTT becomes available
-after the HMI starts.
+Mini-HMI `0.0.8`, which reconnects automatically when MQTT becomes available
+after the HMI starts and provides the config-driven generator, alarm, thermal,
+gateway and theme-aware logo views.
 
 All host-networked containers use the gateway's stable local `dnsmasq`
 listener at `127.0.0.1`. Docker otherwise snapshots the current uplink
@@ -43,7 +44,8 @@ The release asset is a gzip tarball whose root contains `docker-compose.yml`.
 
 ## V11 runtime
 
-V11 uses the aligned `0.0.7` KraftBoks image set. The thermal bridge monitors
+V11 uses the aligned KraftBoks image set, with Mini-HMI API/web `0.0.8` and
+the remaining runtime images at `0.0.7`. The thermal bridge monitors
 frame freshness and reconnects its TCP session when a camera connection is
 stale, including after gateway/camera restart in either order.
 It also contains generic HMI and access-proxy templates; firstboot renders the
@@ -52,5 +54,7 @@ Headscale-bound TCP relay from port 10554 to the local `camerahigh` MediaMTX
 stream. The image firewall permits that port only from the cloud node
 `100.64.0.3`. Version `0.1.14` passes the camera credentials from the protected
 site environment only to the local HMI API, restoring ONVIF PTZ without
-exposing the credentials to other containers. Use the release's published
+exposing the credentials to other containers. Version `0.1.15` adds the full
+WM3 measurement template and an explicitly disabled thermal-camera template;
+physical camera commissioning must enable it. Use the release's published
 SHA-256 with the firstboot wizard.
