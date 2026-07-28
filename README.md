@@ -29,7 +29,7 @@ The generated HMI configuration follows the selected `SITE_ID`, includes the
 ten portable pilot-baseline devices, ten overview measurements and four
 gateway/cloud status fields, and subscribes to
 `sites/<SITE_ID>/telemetry/#`. The bundle uses Node-RED 5.0.1 Debian and
-Mini-HMI `0.0.11`, which reconnects automatically when MQTT becomes available
+Mini-HMI `0.0.12`, which reconnects automatically when MQTT becomes available
 after the HMI starts and provides the config-driven generator, alarm, thermal,
 gateway and theme-aware logo views.
 
@@ -44,7 +44,7 @@ The release asset is a gzip tarball whose root contains `docker-compose.yml`.
 
 ## V11 runtime
 
-V11 uses the aligned KraftBoks image set, with Mini-HMI API/web `0.0.11` and
+V11 uses the aligned KraftBoks image set, with Mini-HMI API/web `0.0.12` and
 the remaining runtime images at `0.0.7`. The thermal bridge monitors
 frame freshness and reconnects its TCP session when a camera connection is
 stale, including after gateway/camera restart in either order.
