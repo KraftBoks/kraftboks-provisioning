@@ -155,7 +155,6 @@
       "name": "Termokamera",
       "type": "thermal_camera",
       "section": "Kamera",
-      "asset_id": "generator_1",
       "enabled": false,
       "connection": { "protocol": "mqtt", "mqtt_topic": "sites/__SITE_ID__/telemetry/thermal/thermal-01/state" },
       "measurements": [
