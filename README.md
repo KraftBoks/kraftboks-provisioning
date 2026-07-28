@@ -32,6 +32,13 @@ gateway/cloud status fields, and subscribes to
 Mini-HMI `0.0.7`, which reconnects automatically when MQTT becomes available
 after the HMI starts.
 
+All host-networked containers use the gateway's stable local `dnsmasq`
+listener at `127.0.0.1`. Docker otherwise snapshots the current uplink
+resolver when a container is created, which can leave cloud services using a
+dead Ethernet DNS address after failover to LTE. Container startup uses
+already accepted images; registry access belongs to provisioning/update, not
+to an ordinary reboot.
+
 The release asset is a gzip tarball whose root contains `docker-compose.yml`.
 
 ## V11 runtime
